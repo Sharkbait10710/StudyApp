@@ -7,13 +7,16 @@ import {
 import { 
   readfromStream,
   stateinitVal
-} from './Utility';
+} from './utils/utility';
+
 
 import {
-  makePost 
-} from './apiFunctions';
+  BrowserRouter as Router, Routes, Route
+} from 'react-router-dom'
 
-import Latex from 'react-latex-next'
+import Home from './pages/Home'
+
+var Latex = require("react-latex");
 
 const serverUrl = "http://localhost:3001";
 
@@ -25,23 +28,21 @@ const setup = () => {
 }
 
 function App() {
-  // =====  States  ===== //
-  const [userInput, setuserInput] = useState(stateinitVal(""));
-  
-  useEffect(() => {
-    document.getElementById("output").setHTML(userInput);
-  });
-
   // =====  Init    ===== //
   setup();
 
   // =====  Fronend ===== //
   return(
     <div id="app">
-      <p id="output"></p>
+      <Router>
+        <Routes>
+          <Route path= "/" element={<Home />}/>
+        </Routes>
+      </Router>
+      {/* <p id="output"></p>
       <p><input id="userInput" onInput={() => setuserInput(document.getElementById("userInput").value)}/></p>
       <button id ="Button" onClick={() => makePost(serverUrl, {"test": "1"})}>Press Me</button>
-      <Latex>We give illustrations for the three processes $e^+e^-$, gluon-gluon and $\\gamma\\gamma \\to W t\\bar b$.</Latex>
+      <Latex>{'$$\\frac{1}{2}$$'}</Latex> */}
     </div>
   ); 
 }
