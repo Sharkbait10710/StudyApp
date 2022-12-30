@@ -1,12 +1,9 @@
 import {
-  React, 
-  useEffect, 
-  useState 
+  React
 } from 'react';
 
 import { 
-  readfromStream,
-  stateinitVal
+  readfromStream
 } from './utils/utility';
 
 
@@ -16,7 +13,7 @@ import {
 
 import Home from './pages/Home'
 
-var Latex = require("react-latex");
+// var Latex = require("react-latex");
 
 const serverUrl = "http://localhost:3001";
 
@@ -39,10 +36,6 @@ function App() {
           <Route path= "/" element={<Home />}/>
         </Routes>
       </Router>
-      {/* <p id="output"></p>
-      <p><input id="userInput" onInput={() => setuserInput(document.getElementById("userInput").value)}/></p>
-      <button id ="Button" onClick={() => makePost(serverUrl, {"test": "1"})}>Press Me</button>
-      <Latex>{'$$\\frac{1}{2}$$'}</Latex> */}
     </div>
   ); 
 }
