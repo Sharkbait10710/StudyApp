@@ -1,68 +1,47 @@
-import React, { useEffect, useState } from 'react';
+import {
+  React, 
+  useEffect, 
+  useState 
+} from 'react';
 
-function App() {
-  // Constants
-  const serverUrl = 'http://localhost:3001';
+import { 
+  readfromStream,
+  stateinitVal
+} from './Utility';
 
-  // Utility functions
-  const readfromStream = (response) => {
-    const reader = response.body.getReader();
-    return new ReadableStream({
-      start(controller) {
-        return pump();
-        function pump() {
-          return reader.read().then(({ done, value }) => {
-            // When no more data needs to be consumed, close the stream
-            if (done) {
-              controller.close();
-              return;
-            } else {
-              console.log(String.fromCharCode.apply(null, value));
-            }
-            // Enqueue the next data chunk into our target stream
-            controller.enqueue(value);
-            return pump();
-          });
-        }
-      }
-    })
-  };
+import {
+  makePost 
+} from './apiFunctions';
 
-  //Initialize backend
-  useEffect(() => {
+import Latex from 'react-latex-next'
+
+const serverUrl = "http://localhost:3001";
+
+const setup = () => {
   fetch(serverUrl)
   .then((response) => {
     readfromStream(response);
-  })}, []);
-
-  // States
-  const [userInput, setuserInput] = useState(() => {
-    return "";
   });
+}
+
+function App() {
+  // =====  States  ===== //
+  const [userInput, setuserInput] = useState(stateinitVal(""));
   
   useEffect(() => {
     document.getElementById("output").setHTML(userInput);
   });
 
-  // Functions
-  const handlebuttonClick = () => {
-    fetch(serverUrl, {
-      method: "POST",
-      body: JSON.stringify({
-        "test": "1"
-     }),
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    })
-    .then((response) => {
-      readfromStream(response);
-    })
-  };
+  // =====  Init    ===== //
+  setup();
 
+  // =====  Fronend ===== //
   return(
     <div id="app">
       <p id="output"></p>
       <p><input id="userInput" onInput={() => setuserInput(document.getElementById("userInput").value)}/></p>
-      <button id ="Button" onClick={() => handlebuttonClick()}>Press Me</button>
+      <button id ="Button" onClick={() => makePost(serverUrl, {"test": "1"})}>Press Me</button>
+      <Latex>We give illustrations for the three processes $e^+e^-$, gluon-gluon and $\\gamma\\gamma \\to W t\\bar b$.</Latex>
     </div>
   ); 
 }
