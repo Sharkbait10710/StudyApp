@@ -11,6 +11,7 @@ export const readfromStream = (response, retArr = []) => {
                     return retArr;
                 } else {
                     let val = String.fromCharCode.apply(null, value);
+                    console.log("val: ", val);
                     retArr.push(val);
                 }
                 // Enqueue the next data chunk into our target stream
@@ -31,6 +32,10 @@ export const waitFunc = (param1, param2, func, ...args) => {
         console.log("param1 ", param1, " param2 ", param2);
         setTimeout(() => waitFunc(param1, param2, func, ...args), 100);
     } else {
-        func(...args);
+        let retFunc = (arg1) => {
+            return arg1;
+        }
+        console.log(...args);
+        return retFunc(...args);
     }
 }

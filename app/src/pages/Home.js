@@ -49,19 +49,19 @@ class Item extends React.Component {
     }
 }
 
-const showMenu = (setFunction) => {
+const isMetadata = (setFunction) => {
     fetch(serverUrl)
     .then((response) => {
         let arr = [];
         readfromStream(response, arr);
-        waitFunc(typeof arr, undefined, setFunction, arr);
+       setFunction(waitFunc(typeof arr, undefined, setFunction, arr));
   });
 }
 const Home = () => {
 
     const [Study, setStudy] = React.useState(
         () => {
-            return false;
+            return {"valid": false};
         }
     )
 
@@ -85,7 +85,7 @@ const Home = () => {
                 height: '98vh'}}>
             
             <p id="output">
-                {Study ? 'yes' : 'no'}
+                {JSON.stringify(Study)}
             </p>
             <Grid 
                 container
@@ -127,7 +127,7 @@ const Home = () => {
                                 border: 3
                             }}>
                                 <IconButton
-                                    onClick={() => showMenu(setStudy)}
+                                    onClick={() => isMetadata(setStudy)}
                                     sx = {{
                                         border: 1
                                     }}>

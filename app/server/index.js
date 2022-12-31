@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
         "empty": true
       });
     } else {
-      res.end(String(JSON.parse(String.fromCharCode.apply(null, data))["empty"]));
+      res.end(String.fromCharCode.apply(null, data));
     }
   });
 });
