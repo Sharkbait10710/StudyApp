@@ -14,15 +14,15 @@ app.use(cors());
 app.use(body_parser.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => {
-  fs.readFile("data.json", function(err, data) {
-      
-    // Check for errors
-    if (err) throw err;
-   
-    // Converting to JSON
-    const users = JSON.parse(data);
-      
-    res.end(users);
+  fs.readFile("metadata.json", function(err, data) {
+    if (err) {
+      res.end("metadata.json doesn't exist");
+      writeJSON("metadata.json", {
+        "empty": true
+      });
+    } else {
+      res.end(JSON.parse(data));
+    }
   });
 });
 
@@ -34,3 +34,13 @@ app.post('/', function requestHandler(req, res) {
     console.log("Done writing");
   });
 });
+
+
+// =====  Helper Functions =====  //
+const writeJSON = (fileName, jsonObj) => {
+  console.log(jsonObj);
+  fs.writeFile(fileName, JSON.stringify(jsonObj), err => {
+    if (err) throw err; 
+    console.log("Done writing");
+  });
+}

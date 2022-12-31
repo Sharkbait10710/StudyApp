@@ -1,69 +1,185 @@
 import * as React from 'react';
+import {
+    Link
+} from 'react-router-dom';
+
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
+
+import WebFont from 'webfontloader'
 
 import {
     Container,
     Grid,
+
+    IconButton
 } from '@mui/material';
+
+import {
+    readfromStream
+} from '../utils/utility'
+
+const serverUrl = "http://localhost:3001";
 
 class Item extends React.Component {
     render() {
         return (
-            <Grid 
-                item 
-                xl={this.props.xl}
-                sx={{
+            <Grid
+                item
+                sx = {{
                     display: 'flex',
-                    justifyContent: 'center',
                     alignItems: 'center',
-                    
-                    height: '50%',
+                    justifyContent: 'center',
+                    flexGrow: 1,
 
+                    fontFamily: 'Space Grotesk',
                     textAlign: 'center',
+                    fontSize: '20px',
+
+                    border: 1,
+                    borderColor: "#e0dbce",
                     
-                    border: 10,
-                    borderColor: 'green'
+                    width: '40vh',
+                    m: '10px',
+                    p: '5px'
                 }}>
-                {this.props.text}
+                    <Link to={this.props.src}>{this.props.text}</Link>
             </Grid>
-        )
+        );
     }
 }
 
+const showMenu = () => {
+    fetch(serverUrl)
+    .then((response) => {
+        readfromStream(response);
+  });
+    return (
+        <p>something</p>
+    );
+}
 const Home = () => {
+
+    const [study, setstudy] = React.useState(
+        () => {
+            return false;
+        }
+    )
+
+    React.useEffect(() => {
+        WebFont.load({
+            google: {
+            families: ['Space Grotesk']
+            }
+        });
+    }, []);
+
     document.body.style.overflow = 'hidden';
+
     return (
         <Container
             maxWidth={false}
             sx={{
                 display: 'flex',
+                justifyContent: 'center',
                 
-                alignItems: 'center',
-                
-                height: '100vh',
-                
-                border: 3,
-                borderColor: 'black'}}>
-
+                height: '98vh'}}>
+            
             <Grid 
                 container
-                spacing={2}
-                sx={{
+                sx = {{
                     display: 'flex',
-                    alignItems: 'center',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
+                }}>
 
-                    width: '100%',
-                    height: '100%',
+                <Grid
+                    item
+                    sx = {{
+                        display: 'flex',
+                        alignItems: 'center',
 
-                    bgcolor: 'blue',
-                    color: 'white'}}>
+                        border: 3,
+                        borderColor: 'blue',
+                        
+                        width: '40vh',
+                        
+                        ml: '20vh',
+                        mb: '15vh'
+                    }}
+                    id="left">
+                        <Grid 
+                            container
+                            sx = {{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                
+                                fontFamily: 'Space Grotesk',
+                                textAlign: 'center',
+                                width: '100%',
+                                height: '100%',
 
-            <Item xl={6} text={
-                `This will
-                definitely 
-                work letsss
-                goooo`
-            }></Item>
-            <Item xl={6} text="something"/>
+                                border: 3
+                            }}>
+                                <IconButton
+                                    onClick={() => showMenu()}
+                                    sx = {{
+                                        border: 1
+                                    }}>
+                                    <ArrowBackIosNewIcon/>
+                                </IconButton>
+                        </Grid>
+                </Grid>
+                <Grid
+                    item
+                    sx = {{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        
+                        height: '185px',
+                        mr: '21vh',
+                        mb: '10vh'
+                    }}
+                    id="right">
+                        <Grid 
+                            container
+                            sx = {{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                
+                                fontFamily: 'Space Grotesk',
+                                textAlign: 'center',
+                                width: '100%',
+                                height: '100%'
+                            }}>
+                                <Grid
+                                    item
+                                    sx = {{
+                                        fontWeight: 'bold',
+                                        fontSize: '80px',
+                                        
+                                        border: 3,
+                                        borderColor: '#e0dbce',
+                                        borderRadius: '15px',
+                                        mb: '1%',
+                                        p: '10px'
+                                    }}>
+                                    Study App
+                                </Grid>
+                                <Grid
+                                    item
+                                    sx = {{
+                                        fontSize: '20px',
+                                        textDecorationLine: 'underline',
+                                        textTransform: 'uppercase'
+                                    }}>
+                                        Pick something
+                                </Grid>
+                        </Grid>
+                </Grid>
             </Grid>
         </Container>
     )
