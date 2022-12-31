@@ -25,3 +25,12 @@ export const readfromStream = (response, retArr = []) => {
 export const stateinitVal = (val) => {
     return val;
 }
+
+export const waitFunc = (param1, param2, func, ...args) => {
+    if (param1 == param2) {
+        console.log("param1 ", param1, " param2 ", param2);
+        setTimeout(() => waitFunc(param1, param2, func, ...args), 100);
+    } else {
+        func(...args);
+    }
+}

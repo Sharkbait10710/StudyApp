@@ -15,7 +15,8 @@ import {
 } from '@mui/material';
 
 import {
-    readfromStream
+    readfromStream,
+    waitFunc
 } from '../utils/utility'
 
 const serverUrl = "http://localhost:3001";
@@ -49,14 +50,11 @@ class Item extends React.Component {
 }
 
 const showMenu = (setFunction) => {
-    let isTrue = false;
     fetch(serverUrl)
     .then((response) => {
         let arr = [];
         readfromStream(response, arr);
-        setTimeout(() => {
-            setFunction(arr[0] == "true");
-        }, 1);
+        waitFunc(typeof arr, undefined, setFunction, arr);
   });
 }
 const Home = () => {
