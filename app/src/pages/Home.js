@@ -52,11 +52,32 @@ class Item extends React.Component {
 }
 
 const getNames = (setFunction) => {
-    fetch(serverUrl + "/database/names")
+    getServerdata(serverUrl + "/database/names", setFunction);
+}
+
+const makeActivity = (name) => {
+    makePost(serverUrl + "/database/new", {
+        "name": name
+    });
+}
+// =====    Helper Functions    ===== //
+const getServerdata = (url, setFunction) => {
+    fetch(url)
     .then((response) => {
         let arr = [];
         readfromStream(response, arr);
-        setTimeout(() => setFunction(JSON.stringify(arr[0]).replaceAll('\\', ' ')), delayAmt);
+        setTimeout(() => setFunction(JSON.parse(arr[0]), delayAmt));
+    })
+}
+
+const makePost = (url, JSONobj) => {
+    console.log(JSONobj)
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify(JSONobj)
     })
 }
 
@@ -141,9 +162,10 @@ const Home = () => {
                                     }}>
                                     <ArrowBackIosNewIcon/>
                                 </IconButton>
-                                {buttonState ? 
+                                {(buttonState && (serverData == null || serverData["return"] == null)) ? 
                                 <IconButton
                                     onClick={() => {
+                                        makeActivity("flashcards");
                                     }}
                                     sx = {{
                                         border: 1
@@ -192,10 +214,11 @@ const Home = () => {
                                 <Grid
                                     item
                                     sx = {{
-                                        fontSize: '20px'
+                                        fontSize: '20px',
+                                        textTransform: 'uppercase',
+                                        textDecoration: 'underline'
                                     }}>
-                                        {
-                                        String(serverData == null ? null : JSON.parse(serverData))}
+                                        do something
                                 </Grid>
                         </Grid>
                 </Grid>

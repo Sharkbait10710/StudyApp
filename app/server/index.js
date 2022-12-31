@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require('cors');
-const body_parser = require('body-parser');
+const bodyParser = require('body-parser');
 const fs = require("fs");
 
 const PORT = process.env.PORT || 3001;
@@ -11,7 +11,8 @@ app.listen(PORT, () => {
 });
 
 app.use(cors());
-app.use(body_parser.urlencoded({ extended: false }));
+// create application/json parser
+var jsonParser = bodyParser.json()
 
 const defaultData = {
   "size": 0
@@ -40,11 +41,12 @@ app.get('/database/:reqType', (req, res) => {
   });
 });
 
-app.post('/database/:reqType', function requestHandler(req, res) {
+app.post('/database/:reqType', jsonParser, function requestHandler(req, res) {
+  // console.log(req);
   const write = () => {
     switch(req.params["reqType"]) {
       case "new": {
-        console.log("new");
+        console.log(JSON.stringify(req.body));
         break;
       }
       default: {
