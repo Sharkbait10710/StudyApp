@@ -3,7 +3,8 @@ import {
     Link
 } from 'react-router-dom';
 
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
+import ArrowBackIosNewIcon  from '@mui/icons-material/ArrowBackIosNew'
+import AddIcon              from '@mui/icons-material/Add'
 
 import WebFont from 'webfontloader'
 
@@ -20,6 +21,7 @@ import {
 } from '../utils/utility'
 
 const serverUrl = "http://localhost:3001";
+const delayAmt  = 5;
 
 class Item extends React.Component {
     render() {
@@ -49,19 +51,25 @@ class Item extends React.Component {
     }
 }
 
-const isMetadata = (setFunction) => {
-    fetch(serverUrl)
+const getNames = (setFunction) => {
+    fetch(serverUrl + "/database/names")
     .then((response) => {
         let arr = [];
         readfromStream(response, arr);
-       setFunction(waitFunc(typeof arr, undefined, setFunction, arr));
-  });
+        setTimeout(() => setFunction(JSON.stringify(arr[0]).replaceAll('\\', ' ')), delayAmt);
+    })
 }
-const Home = () => {
 
-    const [Study, setStudy] = React.useState(
+const Home = () => {
+    const [serverData, setserverData] = React.useState(
         () => {
-            return {"valid": false};
+            return null;
+        }
+    )
+
+    const [buttonState, setbuttonState] = React.useState(
+        () => {
+            return false;
         }
     )
 
@@ -84,9 +92,6 @@ const Home = () => {
                 
                 height: '98vh'}}>
             
-            <p id="output">
-                {JSON.stringify(Study)}
-            </p>
             <Grid 
                 container
                 sx = {{
@@ -115,9 +120,9 @@ const Home = () => {
                             container
                             sx = {{
                                 display: 'flex',
-                                flexDirection: 'column',
+                                flexDirection: 'row',
                                 alignItems: 'center',
-                                justifyContent: 'center',
+                                justifyContent: 'space-evenly',
                                 
                                 fontFamily: 'Space Grotesk',
                                 textAlign: 'center',
@@ -127,12 +132,24 @@ const Home = () => {
                                 border: 3
                             }}>
                                 <IconButton
-                                    onClick={() => isMetadata(setStudy)}
+                                    onClick={() => {
+                                        getNames(setserverData);
+                                        setbuttonState(!buttonState);
+                                    }}
                                     sx = {{
                                         border: 1
                                     }}>
                                     <ArrowBackIosNewIcon/>
                                 </IconButton>
+                                {buttonState ? 
+                                <IconButton
+                                    onClick={() => {
+                                    }}
+                                    sx = {{
+                                        border: 1
+                                    }}>
+                                    <AddIcon/>
+                                </IconButton> : ""}
                         </Grid>
                 </Grid>
                 <Grid
@@ -175,11 +192,10 @@ const Home = () => {
                                 <Grid
                                     item
                                     sx = {{
-                                        fontSize: '20px',
-                                        textDecorationLine: 'underline',
-                                        textTransform: 'uppercase'
+                                        fontSize: '20px'
                                     }}>
-                                        Pick something
+                                        {
+                                        String(serverData == null ? null : JSON.parse(serverData))}
                                 </Grid>
                         </Grid>
                 </Grid>
