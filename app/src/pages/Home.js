@@ -52,15 +52,11 @@ const showMenu = (setFunction) => {
     let isTrue = false;
     fetch(serverUrl)
     .then((response) => {
-        let val = readfromStream(response);
-        console.log("readfromStream(response)", val)
-        isTrue = val == "true";
-        console.log("isTrue ", isTrue);
-        if (isTrue) {
-            setFunction(1);
-        } else {
-            setFunction(0);
-        }
+        let arr = [];
+        readfromStream(response, arr);
+        setTimeout(() => {
+            setFunction(arr[0] == "true");
+        }, 1);
   });
 }
 const Home = () => {

@@ -1,6 +1,6 @@
-export const readfromStream = (response) => {
+export const readfromStream = (response, retArr = []) => {
     const reader = response.body.getReader();
-    return new ReadableStream({
+    let _ = new ReadableStream({
         start(controller) {
             return pump();
             function pump() {
@@ -8,9 +8,10 @@ export const readfromStream = (response) => {
                 // When no more data needs to be consumed, close the stream
                 if (done) {
                     controller.close();
-                    return;
+                    return retArr;
                 } else {
-                    console.log(String.fromCharCode.apply(null, value));
+                    let val = String.fromCharCode.apply(null, value);
+                    retArr.push(val);
                 }
                 // Enqueue the next data chunk into our target stream
                 controller.enqueue(value);

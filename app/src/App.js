@@ -2,10 +2,6 @@ import {
   React
 } from 'react';
 
-import { 
-  readfromStream
-} from './utils/utility';
-
 
 import {
   BrowserRouter as Router, Routes, Route
