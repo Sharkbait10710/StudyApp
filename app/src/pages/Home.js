@@ -52,7 +52,10 @@ const showMenu = (setFunction) => {
     let isTrue = false;
     fetch(serverUrl)
     .then((response) => {
-        isTrue = readfromStream(response) == "true";
+        let val = readfromStream(response);
+        console.log("readfromStream(response)", val)
+        isTrue = val == "true";
+        console.log("isTrue ", isTrue);
         if (isTrue) {
             setFunction(1);
         } else {
@@ -76,10 +79,6 @@ const Home = () => {
         });
     }, []);
 
-    React.useEffect(() => {
-        
-    })
-
     document.body.style.overflow = 'hidden';
 
     return (
@@ -91,6 +90,9 @@ const Home = () => {
                 
                 height: '98vh'}}>
             
+            <p id="output">
+                {Study ? 'yes' : 'no'}
+            </p>
             <Grid 
                 container
                 sx = {{
