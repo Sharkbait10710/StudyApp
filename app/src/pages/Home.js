@@ -48,18 +48,21 @@ class Item extends React.Component {
     }
 }
 
-const showMenu = () => {
+const showMenu = (setFunction) => {
+    let isTrue = false;
     fetch(serverUrl)
     .then((response) => {
-        readfromStream(response);
+        isTrue = readfromStream(response) == "true";
+        if (isTrue) {
+            setFunction(1);
+        } else {
+            setFunction(0);
+        }
   });
-    return (
-        <p>something</p>
-    );
 }
 const Home = () => {
 
-    const [study, setstudy] = React.useState(
+    const [Study, setStudy] = React.useState(
         () => {
             return false;
         }
@@ -72,6 +75,10 @@ const Home = () => {
             }
         });
     }, []);
+
+    React.useEffect(() => {
+        
+    })
 
     document.body.style.overflow = 'hidden';
 
@@ -124,7 +131,7 @@ const Home = () => {
                                 border: 3
                             }}>
                                 <IconButton
-                                    onClick={() => showMenu()}
+                                    onClick={() => showMenu(setStudy)}
                                     sx = {{
                                         border: 1
                                     }}>
