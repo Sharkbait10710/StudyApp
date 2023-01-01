@@ -31,20 +31,21 @@ class Item extends React.Component {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    flexGrow: 1,
 
                     fontFamily: 'Space Grotesk',
                     textAlign: 'center',
                     fontSize: '20px',
 
-                    border: 1,
-                    borderColor: "#e0dbce",
-                    
-                    width: '25%',
-                    m: '10px',
-                    p: '5px'
+                    width: '75%',
+
+                    border: 'green'
+                
                 }}>
-                    <Link to={this.props.src}>{this.props.text}</Link>
+                    <Link 
+                        to={this.props.src}
+                        style={{
+                            textDecoration: 'none'
+                        }}>{this.props.text}</Link>
             </Grid>
         );
     }
@@ -56,7 +57,10 @@ const getNames = (setFunction) => {
 
 const makeActivity = (name) => {
     makePost(serverUrl + "/database/new", {
-        "name": name
+        "name": name,
+        "body": JSON.stringify({
+            "test": "test"
+        })
     });
 }
 // =====    Helper Functions    ===== //
@@ -125,59 +129,52 @@ const Home = () => {
                     item
                     sx = {{
                         display: 'flex',
-                        alignItems: 'center',
-                    
-                        ml: buttonState ? "15%" : "30%",
+                        flexDirection: buttonState ? 'row' : 'row-reverse',
+                        alignItems: 'center', 
+                        justifyContent: 'space-between',
+
+                        width: "25%",
+                        ml: "15%",
                         mb: '15vh',
 
                         border: 3
                     }}
                     id="left">
-                        <Grid 
-                            container
+                        <IconButton
+                            onClick={() => {
+                                getNames(setserverData);
+                                setTimeout(() => setbuttonState(!buttonState), delayAmt*10);
+                            }}
                             sx = {{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                
-                                fontFamily: 'Space Grotesk',
-                                textAlign: 'center',
-                                width: '100%',
-                                height: '100%'
+                                border: 1,
+                                transform: "scale(1.7)"
                             }}>
+                            <ArrowBackIosNewIcon/>
+                        </IconButton>
+                        {   (!buttonState) ? "" :
+                            (serverData == null || serverData["return"] == null) ?
                                 <IconButton
                                     onClick={() => {
-                                        getNames(setserverData);
-                                        setTimeout(() => setbuttonState(!buttonState), delayAmt*10);
+                                        makeActivity("flashcards");
+                                        setTimeout(() => getNames(setserverData), delayAmt*50);
                                     }}
                                     sx = {{
                                         border: 1,
-                                        transform: "scale(1.7)",
-                                        mr: !buttonState ? '0vh' :
-                                            (serverData == null || serverData["return"] == null) ? '20vh' : '8vh'
+                                        transform: "scale(1.7)"
                                     }}>
-                                    <ArrowBackIosNewIcon/>
-                                </IconButton>
-                                {   (!buttonState) ? "" :
-                                    (serverData == null || serverData["return"] == null) ?
-                                        <IconButton
-                                            onClick={() => {
-                                                makeActivity("flashcards");
-                                                setTimeout(() => getNames(setserverData), delayAmt*50);
-                                            }}
-                                            sx = {{
-                                                border: 1,
-                                                transform: "scale(1.7)"
-                                            }}>
-                                            <AddIcon/>
-                                        </IconButton> :
+                                    <AddIcon/>
+                                </IconButton> :
+                                <Grid 
+                                    container 
+                                    sx = {{
+                                        display: 'flex',
+                                        flexDirection: 'column'
+                                    }}>
                                     <Item text={
                                         `something is up`
                                     }/>
-
-                                }
-                        </Grid>
+                                </Grid>
+                        }
                 </Grid>
                 <Grid
                     item

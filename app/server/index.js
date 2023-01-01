@@ -27,16 +27,7 @@ app.get('/database/:reqType', (req, res) => {
       writeJSON("database/database.json", defaultData);
       res.end(JSON.stringify(defaultData));
     } else {
-      switch(req.params["reqType"]) {
-        case "names": {
-          res.end(JSONextract(data, accessJSONele, "activities"));
-          break;
-        };
-        default: {
-          console.log("default");
-          break;
-        };
-      }
+      res.end(JSONextract(data, accessJSONele, req.params["reqType"]));
     }
   });
 });
@@ -48,22 +39,18 @@ app.post('/database/:reqType', jsonParser, function requestHandler(req, res) {
         fs.readFile("database/database.json", (err, data) => {
           if (err) throw err;
           fileData = JSON.parse(buffertoStr(data));
-          if (fileData["activities"] == undefined) {
+          if (fileData["names"] == undefined) {
             fileData["size"] = 1;
-            fileData["activities"] = [
-              req.body
+            fileData["names"] = [
+              req.body["name"]
             ];
+            fileData[req.body["name"]] = req.body["body"];
             writeJSON("database/database.json", fileData);
           } else {
-            let flag = false;
-            let index = 0;
-            while (!flag && index < fileData["activities"].length) {
-              flag = fileData["activities"][index]["name"] == req.body["name"];
-              index += 1;
-            }
-            if (!flag) {
-              fileData["names"].push(req.body['name']);
-              writeJSON("database/database.json", fileData);
+            if (fileData[req.body["name"]] == undefined) {
+              fileData["size"] += 1;
+              fileData["names"].push(req.body["name"]);
+              fileData[req.body["name"]] = req.body["body"];
             }
           }
         })
