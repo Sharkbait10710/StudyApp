@@ -42,11 +42,21 @@ app.get('/database/:reqType', (req, res) => {
 });
 
 app.post('/database/:reqType', jsonParser, function requestHandler(req, res) {
-  // console.log(req);
   const write = () => {
     switch(req.params["reqType"]) {
       case "new": {
-        console.log(JSON.stringify(req.body));
+        fs.readFile("database/database.json", (err, data) => {
+          if (err) throw err;
+          fileData = JSON.parse(buffertoStr(data));
+          if (fileData["names"] == undefined) {
+            fileData["names"] = {
+            };
+            writeJSON("database/database.json", fileData);
+          } else {
+            fileData["names"].push(req.body['name']);
+            writeJSON("database/database.json", fileData);
+          }
+        })
         break;
       }
       default: {

@@ -16,8 +16,7 @@ import {
 } from '@mui/material';
 
 import {
-    readfromStream,
-    waitFunc
+    readfromStream
 } from '../utils/utility'
 
 const serverUrl = "http://localhost:3001";
