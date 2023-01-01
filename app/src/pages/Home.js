@@ -20,7 +20,7 @@ import {
 } from '../utils/utility'
 
 const serverUrl = "http://localhost:3001";
-const delayAmt  = 5;
+const delayAmt  = 1;
 
 class Item extends React.Component {
     render() {
@@ -129,8 +129,7 @@ const Home = () => {
 
                         border: 3,
                         borderColor: 'blue',
-                        
-                        width: '40vh',
+                    
                         
                         ml: '20vh',
                         mb: '15vh'
@@ -154,7 +153,7 @@ const Home = () => {
                                 <IconButton
                                     onClick={() => {
                                         getNames(setserverData);
-                                        setbuttonState(!buttonState);
+                                        setTimeout(() => setbuttonState(!buttonState), delayAmt*10);
                                     }}
                                     sx = {{
                                         border: 1
@@ -162,15 +161,21 @@ const Home = () => {
                                     <ArrowBackIosNewIcon/>
                                 </IconButton>
                                 {(buttonState && (serverData == null || serverData["return"] == null)) ? 
-                                <IconButton
-                                    onClick={() => {
-                                        makeActivity("flashcards");
-                                    }}
-                                    sx = {{
-                                        border: 1
-                                    }}>
-                                    <AddIcon/>
-                                </IconButton> : ""}
+                                    <IconButton
+                                        onClick={() => {
+                                            makeActivity("flashcards");
+                                        }}
+                                        sx = {{
+                                            border: 1
+                                        }}>
+                                        <AddIcon/>
+                                    </IconButton> : 
+                                    serverData == null ? "" :
+                                    <Item text={
+                                        `something is up`
+                                    }/>
+
+                                }
                         </Grid>
                 </Grid>
                 <Grid
@@ -217,7 +222,8 @@ const Home = () => {
                                         textTransform: 'uppercase',
                                         textDecoration: 'underline'
                                     }}>
-                                        do something
+                                        {String(buttonState)}
+                                        
                                 </Grid>
                         </Grid>
                 </Grid>

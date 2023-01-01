@@ -29,7 +29,7 @@ app.get('/database/:reqType', (req, res) => {
     } else {
       switch(req.params["reqType"]) {
         case "names": {
-          res.end(JSONextract(data, accessJSONele, "names"));
+          res.end(JSONextract(data, accessJSONele, "activities"));
           break;
         };
         default: {
@@ -48,13 +48,23 @@ app.post('/database/:reqType', jsonParser, function requestHandler(req, res) {
         fs.readFile("database/database.json", (err, data) => {
           if (err) throw err;
           fileData = JSON.parse(buffertoStr(data));
-          if (fileData["names"] == undefined) {
-            fileData["names"] = {
-            };
+          if (fileData["activities"] == undefined) {
+            fileData["size"] = 1;
+            fileData["activities"] = [
+              req.body
+            ];
             writeJSON("database/database.json", fileData);
           } else {
-            fileData["names"].push(req.body['name']);
-            writeJSON("database/database.json", fileData);
+            let flag = false;
+            let index = 0;
+            while (!flag && index < fileData["activities"].length) {
+              flag = fileData["activities"][index]["name"] == req.body["name"];
+              index += 1;
+            }
+            if (!flag) {
+              fileData["names"].push(req.body['name']);
+              writeJSON("database/database.json", fileData);
+            }
           }
         })
         break;
