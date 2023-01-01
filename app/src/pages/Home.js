@@ -40,7 +40,7 @@ class Item extends React.Component {
                     border: 1,
                     borderColor: "#e0dbce",
                     
-                    width: '40vh',
+                    width: '25%',
                     m: '10px',
                     p: '5px'
                 }}>
@@ -126,13 +126,11 @@ const Home = () => {
                     sx = {{
                         display: 'flex',
                         alignItems: 'center',
-
-                        border: 3,
-                        borderColor: 'blue',
                     
-                        
-                        ml: '20vh',
-                        mb: '15vh'
+                        ml: buttonState ? "15%" : "30%",
+                        mb: '15vh',
+
+                        border: 3
                     }}
                     id="left">
                         <Grid 
@@ -141,14 +139,12 @@ const Home = () => {
                                 display: 'flex',
                                 flexDirection: 'row',
                                 alignItems: 'center',
-                                justifyContent: 'space-evenly',
+                                justifyContent: 'space-between',
                                 
                                 fontFamily: 'Space Grotesk',
                                 textAlign: 'center',
                                 width: '100%',
-                                height: '100%',
-
-                                border: 3
+                                height: '100%'
                             }}>
                                 <IconButton
                                     onClick={() => {
@@ -156,21 +152,26 @@ const Home = () => {
                                         setTimeout(() => setbuttonState(!buttonState), delayAmt*10);
                                     }}
                                     sx = {{
-                                        border: 1
+                                        border: 1,
+                                        transform: "scale(1.7)",
+                                        mr: !buttonState ? '0vh' :
+                                            (serverData == null || serverData["return"] == null) ? '20vh' : '8vh'
                                     }}>
                                     <ArrowBackIosNewIcon/>
                                 </IconButton>
-                                {(buttonState && (serverData == null || serverData["return"] == null)) ? 
-                                    <IconButton
-                                        onClick={() => {
-                                            makeActivity("flashcards");
-                                        }}
-                                        sx = {{
-                                            border: 1
-                                        }}>
-                                        <AddIcon/>
-                                    </IconButton> : 
-                                    serverData == null ? "" :
+                                {   (!buttonState) ? "" :
+                                    (serverData == null || serverData["return"] == null) ?
+                                        <IconButton
+                                            onClick={() => {
+                                                makeActivity("flashcards");
+                                                setTimeout(() => getNames(setserverData), delayAmt*50);
+                                            }}
+                                            sx = {{
+                                                border: 1,
+                                                transform: "scale(1.7)"
+                                            }}>
+                                            <AddIcon/>
+                                        </IconButton> :
                                     <Item text={
                                         `something is up`
                                     }/>
@@ -222,7 +223,7 @@ const Home = () => {
                                         textTransform: 'uppercase',
                                         textDecoration: 'underline'
                                     }}>
-                                        {String(buttonState)}
+                                        {JSON.stringify(serverData)}
                                         
                                 </Grid>
                         </Grid>
