@@ -178,12 +178,12 @@ const Home = () => {
             setTimeout(() => setreadyInput(false), delayAmt);
         }
 
-        console.log(showMidButton);
+        console.log(serverData["return"]["names"]);
     });
 
     // "listeners"
-    let showSideAdd = buttonState && serverData != null && serverData["return"]["names"] != undefined;
-    let showMidButton = buttonState && (serverData == null || serverData["return"]["names"] == undefined);
+    let showSideAdd = buttonState && serverData != null && serverData["return"]["names"] != undefined && Object.keys(serverData["return"]["names"]).length !== 0;
+    let showMidButton = buttonState && (serverData == null || serverData["return"]["names"] == undefined || Object.keys(serverData["return"]["names"]).length === 0);
     
     document.body.style.overflow = 'hidden';
     return (
@@ -262,6 +262,8 @@ const Home = () => {
                                                             console.log("name");
                                                             deleteActivity(name);
                                                             getNames(setserverData);
+                                                            setTimeout(() => getNames(setserverData), delayAmt*50);
+                                                            setTimeout(() => setreadyInput(false), delayAmt);
                                                         }
                                                     }/>
                                                 </Grid>
