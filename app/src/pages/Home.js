@@ -12,7 +12,8 @@ import {
     Container,
     Grid,
 
-    IconButton
+    IconButton,
+    Input
 } from '@mui/material';
 
 import {
@@ -21,6 +22,43 @@ import {
 
 const serverUrl = "http://localhost:3001";
 const delayAmt  = 1;
+
+class AccessButton extends React.Component {
+    render() {
+        return (
+            <IconButton
+                onClick={() => {
+                    let _ = !this.props.cond ? getNames(this.props.runFunction) : 1 == 1;
+                    setTimeout(() => this.props.setFunction(!this.props.cond), delayAmt*10);
+                }}
+                sx = {{
+                    border: 1,
+                    transform: "scale(1.7)"
+                }}>
+                <ArrowBackIosNewIcon/>
+            </IconButton>
+        )
+    }
+}
+
+class AddButton extends React.Component {
+    render() {
+        return (
+            <IconButton
+                onClick={() => {
+                    // makeActivity("flashcards");
+                    // setTimeout(() => getNames(this.props.setFunction), delayAmt*50);
+                    this.props.setFunction(true);
+                }}
+                sx = {{
+                    border: 1,
+                    transform: "scale(1.7)"
+                }}>
+                <AddIcon/>
+            </IconButton>
+        )
+    }
+}
 
 class Item extends React.Component {
     render() {
@@ -97,6 +135,12 @@ const Home = () => {
         }
     )
 
+    const [readyInput, setreadyInput] = React.useState(
+        () => {
+            return false;
+        }
+    )
+
     React.useEffect(() => {
         WebFont.load({
             google: {
@@ -105,8 +149,11 @@ const Home = () => {
         });
     }, []);
 
+    // listeners
+    let showSideAdd = buttonState && serverData != null && serverData["return"]["size"] != 0;
+    let showMidButton = buttonState && (serverData == null || serverData["return"]["size"] == 0);
+    
     document.body.style.overflow = 'hidden';
-
     return (
         <Container
             maxWidth={false}
@@ -140,39 +187,37 @@ const Home = () => {
                         border: 3
                     }}
                     id="left">
-                        <IconButton
-                            onClick={() => {
-                                getNames(setserverData);
-                                setTimeout(() => setbuttonState(!buttonState), delayAmt*10);
-                            }}
+                        <Grid
+                            container 
                             sx = {{
-                                border: 1,
-                                transform: "scale(1.7)"
-                            }}>
-                            <ArrowBackIosNewIcon/>
-                        </IconButton>
-                        {   (!buttonState) ? "" :
-                            (serverData == null || serverData["return"] == null) ?
-                                <IconButton
-                                    onClick={() => {
-                                        makeActivity("flashcards");
-                                        setTimeout(() => getNames(setserverData), delayAmt*50);
-                                    }}
-                                    sx = {{
-                                        border: 1,
-                                        transform: "scale(1.7)"
-                                    }}>
-                                    <AddIcon/>
-                                </IconButton> :
+                                display: 'flex',
+                                flexDirection: showSideAdd ? 'column' : showMidButton ? 'row' : 'row-reverse',
+                                alignItems: 'flex-start', 
+                                justifyContent: 'space-between',
+
+                                height: showSideAdd ? "130px" : "auto"
+                            }}
+                        >
+                            {showSideAdd ? <AddButton setFunction={setreadyInput}/> : ""}
+                            <AccessButton 
+                            cond={buttonState} 
+                            runFunction={setserverData} 
+                            setFunction={setbuttonState}/>
+                        </Grid>
+
+                        {   
+                            !buttonState ? "" :
+                            showMidButton ?
+                                <AddButton setFunction={setreadyInput}/> :
                                 <Grid 
                                     container 
                                     sx = {{
                                         display: 'flex',
                                         flexDirection: 'column'
                                     }}>
-                                    <Item text={
-                                        `something is up`
-                                    }/>
+                                        {
+                                            serverData["return"]["names"].map((name) => <Item text={name} key={name}/>)
+                                        }
                                 </Grid>
                         }
                 </Grid>
@@ -220,12 +265,63 @@ const Home = () => {
                                         textTransform: 'uppercase',
                                         textDecoration: 'underline'
                                     }}>
-                                        {JSON.stringify(serverData)}
-                                        
+                                        {/* {serverData == null ? "null": serverData["return"]["names"]} */}
+                                        {String(showMidButton)}
                                 </Grid>
                         </Grid>
                 </Grid>
             </Grid>
+            {readyInput ? 
+                <Grid
+                    container
+                    sx={{
+                        zIndex: 1,
+
+                        color: 'red',
+                        textAlign: 'center',
+
+                        position: 'absolute',
+                        left: "20%",
+                        top: "35%",
+
+                        height: "15vh",
+                        width: "60%",
+
+                        border: 3,
+                        borderColor: '#e0dbce',
+                        borderRadius: '15px'
+                    }}>
+                        <Grid
+                            item
+                            sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                
+                                boxShadow: "0 0 0 max(100vh, 100vw) rgba(0, 0, 0, .6)",
+                                
+                                width: "100%",
+                                height: "100%",
+                                textAlign: "center",
+
+                                bgcolor: "white",
+                                borderRadius: '15px'
+                            }}>
+                                <Input 
+                                    inputProps= {{
+                                        style: { textAlign: 'center' }
+                                    }}
+                                    sx={{
+                                        fontSize: "66px",
+
+                                        border: 1,
+                                        borderColor: 'green'
+                                    }}/>
+                        </Grid>
+                                
+                </Grid>
+            : ""}
+
         </Container>
     )
 }

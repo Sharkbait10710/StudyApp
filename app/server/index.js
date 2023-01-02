@@ -27,7 +27,12 @@ app.get('/database/:reqType', (req, res) => {
       writeJSON("database/database.json", defaultData);
       res.end(JSON.stringify(defaultData));
     } else {
-      res.end(JSONextract(data, accessJSONele, req.params["reqType"]));
+      console.log(JSON.stringify({
+        "return": JSON.parse(buffertoStr(data))
+      }));
+      res.end(JSON.stringify({
+        "return": JSON.parse(buffertoStr(data))
+      }));
     }
   });
 });
