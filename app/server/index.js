@@ -30,7 +30,7 @@ app.get('/database/:reqType', (req, res) => {
       switch(req.params["reqType"]) {
         case "names": {
           res.end(JSON.stringify({
-            "return": JSON.parse(buffertoStr(data))
+            "return": {"names" : JSON.parse(buffertoStr(data))["names"]}
           }));
         }
         default: break;
@@ -72,6 +72,7 @@ app.post('/database/:reqType', jsonParser, function requestHandler(req, res) {
           if (fileData["names"] != undefined && fileData["names"][req.body["name"]] != undefined) {
             delete fileData["names"][req.body["name"]];
             delete fileData[req.body["name"]];
+            fileData["size"] -= 1;
             writeJSON("database/database.json", fileData);
           } 
         })

@@ -20,6 +20,7 @@ import {
 import {
     readfromStream
 } from '../utils/utility'
+import { render } from 'react-dom';
 
 const serverUrl = "http://localhost:3001";
 const delayAmt  = 1;
@@ -64,10 +65,8 @@ class RemoveButton extends React.Component {
         return (
             <IconButton
                 onClick={() => {
-                    this.props.runFunction(this.props.name);
-                }}
-                sx = {{
-                    border: 1
+                    this.props.runFunction();
+                    this.forceUpdate();
                 }}>
                 <RemoveIcon/>
             </IconButton>
@@ -117,7 +116,7 @@ const makeActivity = (name) => {
 }
 
 const deleteActivity = (name) => {
-    makePost(serverUrl + "/database/delete", {
+    makePost(serverUrl + "/database/remove", {
         "name": name
     })
 }
@@ -178,11 +177,13 @@ const Home = () => {
             }
             setTimeout(() => setreadyInput(false), delayAmt);
         }
+
+        console.log(showMidButton);
     });
 
     // "listeners"
-    let showSideAdd = buttonState && serverData != null && serverData["return"]["size"] != 0;
-    let showMidButton = buttonState && (serverData == null || serverData["return"]["size"] == 0);
+    let showSideAdd = buttonState && serverData != null && serverData["return"]["names"] != undefined;
+    let showMidButton = buttonState && (serverData == null || serverData["return"]["names"] == undefined);
     
     document.body.style.overflow = 'hidden';
     return (
@@ -238,8 +239,7 @@ const Home = () => {
 
                         {   
                             !buttonState ? "" :
-                            showMidButton ?
-                                <AddButton setFunction={setreadyInput}/> :
+                            showMidButton ? <AddButton setFunction={setreadyInput}/> :
                                 <Grid 
                                     container 
                                     sx = {{
@@ -248,7 +248,24 @@ const Home = () => {
                                     }}>
                                         {
                                             Object.keys(serverData["return"]["names"]).map(
-                                                (name) => <Item text={name} key={name}/>)
+                                                (name) => 
+                                                <Grid
+                                                    item
+                                                    sx={{
+                                                        display: 'flex'
+                                                    }}
+                                                    key={"Grid " + name}
+                                                    >
+                                                    <Item text={name}/>
+                                                    <RemoveButton runFunction={
+                                                        () => {
+                                                            console.log("name");
+                                                            deleteActivity(name);
+                                                            getNames(setserverData);
+                                                        }
+                                                    }/>
+                                                </Grid>
+                                            )
                                         }
                                 </Grid>
                         }
