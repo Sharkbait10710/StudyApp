@@ -27,12 +27,14 @@ app.get('/database/:reqType', (req, res) => {
       writeJSON("database/database.json", defaultData);
       res.end(JSON.stringify(defaultData));
     } else {
-      console.log(JSON.stringify({
-        "return": JSON.parse(buffertoStr(data))
-      }));
-      res.end(JSON.stringify({
-        "return": JSON.parse(buffertoStr(data))
-      }));
+      switch(req.params["reqType"]) {
+        case "names": {
+          res.end(JSON.stringify({
+            "return": JSON.parse(buffertoStr(data))
+          }));
+        }
+        default: break;
+      }
     }
   });
 });
@@ -41,23 +43,37 @@ app.post('/database/:reqType', jsonParser, function requestHandler(req, res) {
   const write = () => {
     switch(req.params["reqType"]) {
       case "new": {
+        console.log(req.body);
         fs.readFile("database/database.json", (err, data) => {
           if (err) throw err;
           fileData = JSON.parse(buffertoStr(data));
           if (fileData["names"] == undefined) {
             fileData["size"] = 1;
-            fileData["names"] = [
-              req.body["name"]
-            ];
+            fileData["names"] = {
+              [req.body["name"]]: req.body["name"]
+            };
             fileData[req.body["name"]] = req.body["body"];
             writeJSON("database/database.json", fileData);
           } else {
             if (fileData[req.body["name"]] == undefined) {
               fileData["size"] += 1;
-              fileData["names"].push(req.body["name"]);
+              fileData["names"][[req.body["name"]]] = req.body["name"];
               fileData[req.body["name"]] = req.body["body"];
+              writeJSON("database/database.json", fileData);
             }
           }
+        })
+        break;
+      }
+      case "remove": {
+        fs.readFile("database/database.json", (err, data) => {
+          if (err) throw err;
+          fileData = JSON.parse(buffertoStr(data));
+          if (fileData["names"] != undefined && fileData["names"][req.body["name"]] != undefined) {
+            delete fileData["names"][req.body["name"]];
+            delete fileData[req.body["name"]];
+            writeJSON("database/database.json", fileData);
+          } 
         })
         break;
       }

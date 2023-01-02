@@ -5,6 +5,7 @@ import {
 
 import ArrowBackIosNewIcon  from '@mui/icons-material/ArrowBackIosNew'
 import AddIcon              from '@mui/icons-material/Add'
+import RemoveIcon           from '@mui/icons-material/Remove'
 
 import WebFont from 'webfontloader'
 
@@ -46,8 +47,6 @@ class AddButton extends React.Component {
         return (
             <IconButton
                 onClick={() => {
-                    // makeActivity("flashcards");
-                    // setTimeout(() => getNames(this.props.setFunction), delayAmt*50);
                     this.props.setFunction(true);
                 }}
                 sx = {{
@@ -60,6 +59,21 @@ class AddButton extends React.Component {
     }
 }
 
+class RemoveButton extends React.Component {
+    render() {
+        return (
+            <IconButton
+                onClick={() => {
+                    this.props.runFunction(this.props.name);
+                }}
+                sx = {{
+                    border: 1
+                }}>
+                <RemoveIcon/>
+            </IconButton>
+        )
+    }
+}
 class Item extends React.Component {
     render() {
         return (
@@ -101,6 +115,13 @@ const makeActivity = (name) => {
         })
     });
 }
+
+const deleteActivity = (name) => {
+    makePost(serverUrl + "/database/delete", {
+        "name": name
+    })
+}
+
 // =====    Helper Functions    ===== //
 const getServerdata = (url, setFunction) => {
     fetch(url)
@@ -112,14 +133,13 @@ const getServerdata = (url, setFunction) => {
 }
 
 const makePost = (url, JSONobj) => {
-    console.log(JSONobj)
     fetch(url, {
         method: 'POST',
         headers: {
             "Content-type": "application/json"
         },
         body: JSON.stringify(JSONobj)
-    })
+    }).then(() => {})
 }
 
 const Home = () => {
@@ -149,7 +169,18 @@ const Home = () => {
         });
     }, []);
 
-    // listeners
+    document.addEventListener('keydown', (event) => {
+        if (event.key == 'Enter' && readyInput) {
+            let input = document.getElementById("UserInput").value;
+            if (input != null && input != "") {
+                makeActivity(document.getElementById("UserInput").value);
+                setTimeout(() => getNames(setserverData), delayAmt*50);
+            }
+            setTimeout(() => setreadyInput(false), delayAmt);
+        }
+    });
+
+    // "listeners"
     let showSideAdd = buttonState && serverData != null && serverData["return"]["size"] != 0;
     let showMidButton = buttonState && (serverData == null || serverData["return"]["size"] == 0);
     
@@ -216,7 +247,8 @@ const Home = () => {
                                         flexDirection: 'column'
                                     }}>
                                         {
-                                            serverData["return"]["names"].map((name) => <Item text={name} key={name}/>)
+                                            Object.keys(serverData["return"]["names"]).map(
+                                                (name) => <Item text={name} key={name}/>)
                                         }
                                 </Grid>
                         }
@@ -307,7 +339,7 @@ const Home = () => {
                                 bgcolor: "white",
                                 borderRadius: '15px'
                             }}>
-                                <Input 
+                                <Input id="UserInput"
                                     inputProps= {{
                                         style: { textAlign: 'center' }
                                     }}
@@ -316,7 +348,7 @@ const Home = () => {
 
                                         border: 1,
                                         borderColor: 'green'
-                                    }}/>
+                                }}/>
                         </Grid>
                                 
                 </Grid>
