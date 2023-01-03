@@ -11,6 +11,7 @@ import AddIcon              from '@mui/icons-material/Add'
 import AddCircleIcon        from '@mui/icons-material/AddCircle';
 import RemoveIcon           from '@mui/icons-material/Remove'
 import CreateIcon           from '@mui/icons-material/Create'
+import LabelImportantIcon   from '@mui/icons-material/LabelImportant'
 
 import WebFont from 'webfontloader'
 import Textfit from 'react-textfit'
@@ -22,7 +23,7 @@ import {
     IconButton,
 
     Input,
-    TextField,
+    Button,
 
     Radio,
     Checkbox,
@@ -536,6 +537,10 @@ function getWindowSize() {
     
     document.addEventListener('keydown', (event) => {
         if (event.key == 'Enter' && readyInput) {
+            if (document.getElementById("UserInput").value == "") {
+                setreadyInput(false);
+                return;
+            }
             let temp = form;
             temp["name"] = document.getElementById("UserInput").value;
             temp["size"] = 1;
@@ -819,7 +824,6 @@ function getWindowSize() {
                                 }}>
                                 {
                                 Object.keys(form["questions"]).map((ele) => {
-                                    console.log(form["questions"]);
                                     return (
                                         <FormEntry key={"form " + ele} question="fasraer" answer={["0", "1", "2", "3"]}/>
                                     )
@@ -852,7 +856,6 @@ function getWindowSize() {
                                                     ],
                                                     "type": "FR"
                                                 }
-                                            console.log(form);
                                             setForm(temp);
                                             setforceRender(!forceRender);
                                         }}
@@ -866,6 +869,23 @@ function getWindowSize() {
                             </Grid>
                             : ""}
                     </Grid>
+                    <Button 
+                        variant="contained" 
+                        endIcon={<LabelImportantIcon />}
+                        sx={{
+                            position: 'absolute',
+                            bottom: '-5%',
+                            right: '0%',
+                            backgroundColor: '#fff',
+                            color: '#fa5f2f',
+
+                            '&:hover': {
+                                backgroundColor: '#fa5f2f',
+                                color: '#e0dbce',
+                            },
+                        }}>
+                        Submit
+                    </Button>
                 </Grid> :
             ""}
 
