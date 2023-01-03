@@ -19,9 +19,16 @@ import {
     Grid,
 
     IconButton,
+
     Input,
     TextField,
-    Radio
+
+    Radio,
+    Checkbox,
+
+    FormControl,
+    InputLabel,
+    OutlinedInput
 } from '@mui/material';
 
 import {
@@ -146,7 +153,10 @@ class FormEntry extends React.Component {
     constructor(props)
     {
         super(props);
-        this.state = { selection : null };
+        this.state = { 
+            radio : 0,
+            checkbox: 0
+        };
     }
     
     render() {
@@ -158,7 +168,7 @@ class FormEntry extends React.Component {
                     justifyContent: "space-evenly",
                     
                     width: "95%",
-                    height: "25%",
+                    height: "30%",
                     bgcolor: "white",
 
                     border: 3,
@@ -202,8 +212,8 @@ class FormEntry extends React.Component {
                         }}>
                         <div style={{
                             margin: "5px",
-                            fontSize: "18px",
                             fontWeight: "bold",
+                            fontSize: "18px",
                             fontFamily: "Space Grotesk"
                         }}>Question</div>
                         <TextField
@@ -213,12 +223,10 @@ class FormEntry extends React.Component {
                             style={{
                                 position: "relative",
                                 fontFamily: "Space Grotesk",
-                                bottom: "16%",
+                                bottom: "1%",
                                 left: "1%",
-                                fontSize: "10px",
-    
-                                width: "75%",
-                                height: "60%"
+                                margin: "5px",
+                                width: "72%"
                             }}
                         />
                     </Grid>
@@ -242,28 +250,80 @@ class FormEntry extends React.Component {
                             fontWeight: "bold",
                             fontFamily: "Space Grotesk"
                         }}>Type</div>
-                        <div>
-                        <Radio
-                            checked={this.state.selection == 0}
-                            onChange={(event) => {
-                                    console.log(event.target.value)
-                                    this.setState({selection: event.target.value});
-                                }}
-                            value="0"
-                            name="radio-buttons"
-                            inputProps={{ 'aria-label': 'A' }}
-                        />
-                        <Radio
-                            checked={this.state.selection == 1}
-                            onChange={(event) => {
-                                console.log(event.target.value)
-                                this.setState({selection: event.target.value});
-                            }}
-                            value="1"
-                            name="radio-buttons"
-                            inputProps={{ 'aria-label': 'B' }}
-                        />
-                        </div>
+                        <Grid 
+                            container
+                            sx={{
+                                display: 'flex'
+                            }}>
+                            <Grid
+                                item
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    flexGrow: 1,
+                                    fontFamily: "Space Grotesk"
+                                }}>
+                                <Radio
+                                    checked={this.state.radio == 0}
+                                    onChange={(event) => {
+                                            this.setState({radio: event.target.value});
+                                        }}
+                                    value="0"
+                                    name="radio-buttons"
+                                    sx={{
+                                        '&.Mui-checked': {
+                                            color: "#fa5f2f",
+                                        }
+                                    }}
+                                />
+                                FR
+                            </Grid>
+                            <Grid
+                                item
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    flexGrow: 1,
+
+                                    fontFamily: "Space Grotesk"
+                                }}>
+                                <Radio
+                                    checked={this.state.radio == 1}
+                                    onChange={(event) => {
+                                        this.setState({radio: event.target.value});
+                                    }}
+                                    value="1"
+                                    name="radio-buttons"
+                                    sx={{
+                                        '&.Mui-checked': {
+                                            color: "#fa5f2f",
+                                        }
+                                    }}/>
+                                MC
+                            </Grid>
+                            <Grid
+                                item
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    flexGrow: 1,
+
+                                    fontFamily: "Space Grotesk"
+                                }}>
+                                <Checkbox
+                                    checked={this.state.checkbox == 1}
+                                    onChange={(event) => {
+                                        this.setState({checkbox: !this.state.checkbox})
+                                    }}
+                                    value="1"
+                                    sx={{
+                                        '&.Mui-checked': {
+                                            color: "#fa5f2f",
+                                        }
+                                    }}/>
+                                Latex
+                            </Grid>
+                        </Grid>
                     </Grid>
                 </Grid>
                 <Grid
@@ -275,36 +335,83 @@ class FormEntry extends React.Component {
                         
                         width: "45%",
                         height: "90%",
-                        // bgcolor: "red",
-
-                        border: 3,
-                        borderColor: '#e0dbce',
-                        borderRadius: '30px',
 
                         m: "10px"
                     }}>
-                    <Grid
-                        item
-                        sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            width: "90%",
-                            height: "40%",
-                            // bgcolor: "green",
+                    { this.state.radio == 0 ?
+                        <Grid
+                            item
+                            sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                width: "90%",
+                                height: "60%",
+                                // bgcolor: "green",
 
-                            border: 3,
-                            borderColor: '#e0dbce',
-                            borderRadius: '10px',
+                                border: 3,
+                                borderColor: '#e0dbce',
+                                borderRadius: '10px',
 
-                            m: "10px"
-                        }}>
-                        <div style={{
-                            margin: "5px",
-                            fontSize: "18px",
-                            fontWeight: "bold",
-                            fontFamily: "Space Grotesk"
-                        }}>Answer</div>
-                    </Grid>
+                                m: "10px"
+                            }}>
+                            <div style={{
+                                margin: "5px",
+                                fontSize: "18px",
+                                fontWeight: "bold",
+                                fontFamily: "Space Grotesk"
+                            }}>Answer</div>
+                            <TextField
+                                id="outlined-multiline-static"
+                                multiline
+                                rows={2}
+                                style={{
+                                    position: "relative",
+                                    fontFamily: "Space Grotesk",
+                                    bottom: "1%",
+                                    left: "1%",
+                                    margin: "5px",
+                                    width: "75%"
+                                }}
+                            />
+                        </Grid> : 
+                        <Grid
+                            item
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                width: '90%',
+                                height: '95%',
+
+                                mt: '-10px'
+                            }}>
+                            {[0, 1, 2, 3].map((ele) => 
+                                <Grid
+                                    item
+                                    key={ele}>
+                                    <FormControl 
+                                        sx={{ 
+                                            m: 1, 
+                                            width: '90%',
+                                            m: '10px'
+                                        }} 
+                                        variant="outlined">
+                                        <InputLabel 
+                                            sx={{
+                                                mt: "-10px",
+                                                fontFamily: "Space Grotesk"
+                                            }}>
+                                            answer {ele + 1}</InputLabel>
+                                        <OutlinedInput
+                                            id={"answer " + ele}
+                                            sx={{
+                                                height: '3.5vh',
+                                                fontFamily: "Space Grotesk"
+                                            }}/>
+                                    </FormControl>
+                                </Grid>
+                            )}
+                        </Grid>
+                    }
                 </Grid>
             </Grid>
         )
