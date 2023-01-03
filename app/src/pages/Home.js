@@ -218,7 +218,11 @@ class FormEntry extends React.Component {
                                 <OutlinedInput
                                     multiline
                                     rows={3}
-                                    id={"answer"}
+                                    onChange={(event) => {
+                                        console.log(event.target.value);
+                                        this.setState({question: event.target.value});
+                                    }}
+                                    id={"form question " + this.props.id}
                                     sx={{
                                         fontFamily: "Space Grotesk"
                                     }}
@@ -229,11 +233,13 @@ class FormEntry extends React.Component {
                     </Grid>
                     <Grid
                         item
+                        id={"form type " + this.props.id}
+                        value1={String(this.state.radio)}
+                        value2={String(this.state.checkbox)}
                         sx={{
                             display: "flex",
                             alignItems: "center",
                             width: "90%",
-                            // bgcolor: "green",
 
                             border: 3,
                             borderColor: '#e0dbce',
@@ -267,6 +273,7 @@ class FormEntry extends React.Component {
                                         }}
                                     value="0"
                                     name="radio-buttons"
+                                    id={"form FR " + this.props.id}
                                     sx={{
                                         '&.Mui-checked': {
                                             color: "#fa5f2f",
@@ -291,6 +298,7 @@ class FormEntry extends React.Component {
                                     }}
                                     value="1"
                                     name="radio-buttons"
+                                    id={"form MC " + this.props.id}
                                     sx={{
                                         '&.Mui-checked': {
                                             color: "#fa5f2f",
@@ -309,10 +317,11 @@ class FormEntry extends React.Component {
                                 }}>
                                 <Checkbox
                                     checked={this.state.checkbox == 1}
-                                    onChange={(event) => {
+                                    onChange={() => {
                                         this.setState({checkbox: !this.state.checkbox})
                                     }}
                                     value="1"
+                                    id={"form Latex " + this.props.id}
                                     sx={{
                                         '&.Mui-checked': {
                                             color: "#fa5f2f",
@@ -350,7 +359,7 @@ class FormEntry extends React.Component {
                             <FormControl 
                                 sx={{
                                     width: '90%'
-                                }} 
+                                }}
                                 variant="outlined">
                                 <InputLabel 
                                     sx={{
@@ -362,7 +371,7 @@ class FormEntry extends React.Component {
                                 <OutlinedInput
                                     multiline
                                     rows={3}
-                                    id={"answer"}
+                                    id={"form answer 0 " + this.props.id}
                                     sx={{
                                         fontFamily: "Space Grotesk"
                                     }}
@@ -401,7 +410,7 @@ class FormEntry extends React.Component {
                                         <OutlinedInput
                                             multiline
                                             rows={1}
-                                            id={"answer " + ele}
+                                            id={"form answer " + ele + " " + this.props.id}
                                             sx={{
                                                 height: '3.5vh',
                                                 fontFamily: "Space Grotesk"
@@ -553,29 +562,38 @@ function getWindowSize() {
                         "",
                         ""
                     ],
-                    "type": "FR"
+                    "type": "FR",
+                    "Latex": false
                 }
             };
             setForm(temp);
             setshowForm(true);
-            // if (input != null && input != "") {
-            //     makeActivity(document.getElementById("UserInput").value);
-            //     setTimeout(() => getNames(setserverData), delayAmt*50);
-            // }
             setTimeout(() => setreadyInput(false), delayAmt);
+        } else if (showForm) {
+            let temp = form;
+            // console.log("forrrmm1", document.getElementById("form type 0").getAttribute("value1"));
+            // console.log("forrrmm2", document.getElementById("form type 0").getAttribute("value2"));
+            Object.keys(form["questions"]).map((ele) => {
+                setTimeout(() => {
+                    temp["questions"][ele]["question"] = document.getElementById("form question " + ele).value;
+                    temp["questions"][ele]["type"] = document.getElementById("form type " + ele).getAttribute("value1") == 0 ? "FR" : "MC";
+                    temp["questions"][ele]["Latex"] = document.getElementById("form type " + ele).getAttribute("value2") == 0 ? false : true;
+
+                    for (let i = 0; i < temp["questions"][ele]["answer"].length; i++) {
+                        try {
+                            temp["questions"][ele]["answer"][i] = document.getElementById("form answer " + i + " " + ele).value;
+                        } catch (err) {}
+                    }
+
+                    console.log(temp);
+                }, delayAmt);
+            })
         }
     });
     
     // "listeners"
     let showSideAdd = buttonState && serverData != null && serverData["return"]["names"] != undefined && Object.keys(serverData["return"]["names"]).length !== 0;
     let showMidButton = buttonState && (serverData == null || serverData["return"]["names"] == undefined || Object.keys(serverData["return"]["names"]).length === 0);
-    
-    // Simple objects
-    let numformEntries = 
-        serverData != null 
-        && serverData["return"] != null 
-        && serverData["return"]["body"] != undefined 
-        && serverData["return"]["body"]["questions"] != undefined ?  Object.keys(serverData["return"]["body"]["questions"]).length : 0;
 
     document.body.style.overflow = 'hidden';
 
@@ -825,7 +843,7 @@ function getWindowSize() {
                                 {
                                 Object.keys(form["questions"]).map((ele) => {
                                     return (
-                                        <FormEntry key={"form " + ele} question="fasraer" answer={["0", "1", "2", "3"]}/>
+                                        <FormEntry key={"form " + String(ele)} id={String(ele)} question="fasraer" answer={["0", "1", "2", "3"]}/>
                                     )
                                 })}
                                 <Grid
@@ -870,6 +888,10 @@ function getWindowSize() {
                             : ""}
                     </Grid>
                     <Button 
+                        onClick={() => {
+                            makeActivity(form["name"], form["questions"]);
+                            setshowForm(false);
+                        }}
                         variant="contained" 
                         endIcon={<LabelImportantIcon />}
                         sx={{
@@ -884,7 +906,7 @@ function getWindowSize() {
                                 color: '#e0dbce',
                             },
                         }}>
-                        Submit
+                        Commit
                     </Button>
                 </Grid> :
             ""}
