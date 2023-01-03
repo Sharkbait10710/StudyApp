@@ -516,6 +516,12 @@ function getWindowSize() {
         }
     )
 
+    const [forceRender, setforceRender] = React.useState(
+        () => {
+            return false;
+        }
+    )
+
     React.useEffect(() => {
         WebFont.load({
             google: {
@@ -786,7 +792,7 @@ function getWindowSize() {
                             display: "flex",
                             flexDirection: "column",
                             alignItems: "center",
-                            boxShadow: "0 0 0 max(100vh, 100vw) rgba(0, 0, 0, .6)",
+                            boxShadow: "0 0 0 max(100vh, 100vw) rgba(0, 0, 0, .1)",
                             
                             width: "100%",
                             height: "100%",
@@ -813,7 +819,13 @@ function getWindowSize() {
         
                                     borderRadius: '15px'
                                 }}>
-                                <FormEntry question="fasraer" answer={["0", "1", "2", "3"]}/>
+                                {
+                                Object.keys(form["questions"]).map((ele) => {
+                                    console.log(form["questions"]);
+                                    return (
+                                        <FormEntry key={"form " + ele} question="fasraer" answer={["0", "1", "2", "3"]}/>
+                                    )
+                                })}
                                 <Grid
                                     item
                                     sx={{
@@ -830,6 +842,21 @@ function getWindowSize() {
                                     }}>
                                     <IconButton
                                         onClick={() => {
+                                            let temp = form;
+                                            temp["size"] += 1;
+                                            temp["questions"][temp["size"] - 1] = {
+                                                    "question": "",
+                                                    "answer": [
+                                                        "",
+                                                        "",
+                                                        "",
+                                                        ""
+                                                    ],
+                                                    "type": "FR"
+                                                }
+                                            console.log(form);
+                                            setForm(temp);
+                                            setforceRender(!forceRender);
                                         }}
                                         sx = {{
                                             transform: "scale(1.7)",
