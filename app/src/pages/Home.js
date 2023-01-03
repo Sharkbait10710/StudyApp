@@ -1,13 +1,17 @@
 import * as React from 'react';
+
 import {
     Link
 } from 'react-router-dom';
+
+import './style.css';
 
 import ArrowBackIosNewIcon  from '@mui/icons-material/ArrowBackIosNew'
 import AddIcon              from '@mui/icons-material/Add'
 import RemoveIcon           from '@mui/icons-material/Remove'
 
 import WebFont from 'webfontloader'
+import Textfit from 'react-textfit'
 
 import {
     Container,
@@ -51,7 +55,8 @@ class AddButton extends React.Component {
                 }}
                 sx = {{
                     border: 1,
-                    transform: "scale(1.7)"
+                    transform: "scale(1.7)",
+                    mr: this.props.cond ? '16px' : "auto"
                 }}>
                 <AddIcon/>
             </IconButton>
@@ -66,6 +71,16 @@ class RemoveButton extends React.Component {
                 onClick={() => {
                     this.props.runFunction();
                     this.forceUpdate();
+                }} sx={{
+                    width:"3wh",
+                    height:"2vh",
+
+                    border: 1,
+                    borderColor: "#e0dbce",
+                    borderRadius: "15px",
+
+                    ml: "5px",
+                    mr: "5px"
                 }}>
                 <RemoveIcon/>
             </IconButton>
@@ -83,19 +98,19 @@ class Item extends React.Component {
                     justifyContent: 'center',
 
                     fontFamily: 'Space Grotesk',
+                    color: 'black',
                     textAlign: 'center',
                     fontSize: '20px',
 
                     width: '75%',
-
-                    border: 'green'
                 
                 }}>
                     <Link 
                         to={this.props.src}
                         style={{
-                            textDecoration: 'none'
-                        }}>{this.props.text}</Link>
+                        }}>
+                            <Textfit mode="single">{this.props.text}</Textfit>
+                    </Link>
             </Grid>
         );
     }
@@ -137,7 +152,7 @@ const makePost = (url, JSONobj) => {
             "Content-type": "application/json"
         },
         body: JSON.stringify(JSONobj)
-    }).then(() => {})
+    }).catch((err) =>{})
 }
 
 const Home = () => {
@@ -220,27 +235,23 @@ const Home = () => {
 
                         width: "25%",
                         ml: "15%",
-                        mb: '15vh',
-
-                        border: 3
+                        mb: '15vh'
                     }}
                     id="left">
                         <Grid
                             container 
                             sx = {{
                                 display: 'flex',
-                                flexDirection: showSideAdd ? 'column' : showMidButton ? 'row' : 'row-reverse',
-                                alignItems: 'flex-start', 
-                                justifyContent: 'space-between',
-
-                                height: showSideAdd ? "130px" : "auto"
+                                flexDirection: showMidButton || showSideAdd ? 'row' : 'row-reverse',
+                                alignItems: 'center', 
+                                justifyContent: 'space-between'
                             }}
                         >
-                            {showSideAdd ? <AddButton setFunction={setreadyInput}/> : ""}
+                            {showSideAdd ? <AddButton cond={showSideAdd} setFunction={setreadyInput}/> : 
                             <AccessButton 
                             cond={buttonState} 
                             runFunction={setserverData} 
-                            setFunction={setbuttonState}/>
+                            setFunction={setbuttonState}/>}
                         </Grid>
 
                         {   
@@ -258,14 +269,21 @@ const Home = () => {
                                                 <Grid
                                                     item
                                                     sx={{
-                                                        display: 'flex'
+                                                        display: 'flex',
+                                                        justifyContent: 'space-between',
+                                                        alignItems: 'center',
+
+                                                        border: 1,
+                                                        borderColor: "#e0dbce",
+                                                        borderRadius: "15px",
+
+                                                        m: "3px"
                                                     }}
                                                     key={"Grid " + name}
                                                     >
                                                     <Item text={name}/>
                                                     <RemoveButton runFunction={
                                                         () => {
-                                                            console.log("name");
                                                             deleteActivity(name);
                                                             setTimeout(() => getNames(setserverData), delayAmt*50);
                                                         }
@@ -320,8 +338,7 @@ const Home = () => {
                                         textTransform: 'uppercase',
                                         textDecoration: 'underline'
                                     }}>
-                                        {/* {serverData == null ? "null": serverData["return"]["names"]} */}
-                                        {String(showMidButton)}
+                                        Press something
                                 </Grid>
                         </Grid>
                 </Grid>

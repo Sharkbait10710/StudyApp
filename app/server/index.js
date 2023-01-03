@@ -20,6 +20,7 @@ const defaultData = {
 
 app.get('/database/:reqType', (req, res) => {
   fs.readFile("database/database.json", function(err, data) {
+    console.log("getting")
     if (err) {
       if (!fs.existsSync('./database')) {
         fs.mkdirSync('./database');
@@ -40,6 +41,7 @@ app.get('/database/:reqType', (req, res) => {
 });
 
 app.post('/database/:reqType', jsonParser, function requestHandler(req, res) {
+  console.log("posting")
   const write = () => {
     switch(req.params["reqType"]) {
       case "new": {
