@@ -9,6 +9,7 @@ import './style.css';
 import ArrowBackIosNewIcon  from '@mui/icons-material/ArrowBackIosNew'
 import AddIcon              from '@mui/icons-material/Add'
 import RemoveIcon           from '@mui/icons-material/Remove'
+import CreateIcon           from '@mui/icons-material/Create'
 
 import WebFont from 'webfontloader'
 import Textfit from 'react-textfit'
@@ -70,10 +71,9 @@ class RemoveButton extends React.Component {
             <IconButton
                 onClick={() => {
                     this.props.runFunction();
-                    this.forceUpdate();
                 }} sx={{
                     width:"3wh",
-                    height:"2vh",
+                    height:"4vh",
 
                     border: 1,
                     borderColor: "#e0dbce",
@@ -83,6 +83,29 @@ class RemoveButton extends React.Component {
                     mr: "5px"
                 }}>
                 <RemoveIcon/>
+            </IconButton>
+        )
+    }
+}
+
+class EditButton extends React.Component {
+    render() {
+        return (
+            <IconButton
+                onClick={() => {
+                    this.props.runFunction();
+                }} sx={{
+                    width:"3wh",
+                    height:"4vh",
+
+                    border: 1,
+                    borderColor: "#e0dbce",
+                    borderRadius: "15px",
+
+                    ml: "5px",
+                    mr: "5px"
+                }}>
+                <CreateIcon/>
             </IconButton>
         )
     }
@@ -233,7 +256,7 @@ const Home = () => {
                         alignItems: 'center', 
                         justifyContent: 'space-between',
 
-                        width: "25%",
+                        width: "30%",
                         ml: "15%",
                         mb: '15vh'
                     }}
@@ -281,6 +304,7 @@ const Home = () => {
                                                     }}
                                                     key={"Grid " + name}
                                                     >
+                                                    <EditButton />
                                                     <Item text={name}/>
                                                     <RemoveButton runFunction={
                                                         () => {
