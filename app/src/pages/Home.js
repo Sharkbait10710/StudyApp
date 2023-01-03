@@ -454,6 +454,26 @@ const makePost = (url, JSONobj) => {
 }
 
 const Home = () => {
+    
+    const [windowSize, setWindowSize] = React.useState(getWindowSize());
+
+  React.useEffect(() => {
+    function handleWindowResize() {
+      setWindowSize(getWindowSize());
+    }
+
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  }, []);
+
+function getWindowSize() {
+  const {innerWidth, innerHeight} = window;
+  return {innerWidth, innerHeight};
+}
+
     const [serverData, setserverData] = React.useState(
         () => {
             return null;
@@ -481,11 +501,10 @@ const Home = () => {
     const [form, setForm] = React.useState(
         () => {
             return {
-                "name": null
+                "questions": null
             };
         }
     )
-
 
     React.useEffect(() => {
         WebFont.load({
@@ -522,7 +541,15 @@ const Home = () => {
     let showSideAdd = buttonState && serverData != null && serverData["return"]["names"] != undefined && Object.keys(serverData["return"]["names"]).length !== 0;
     let showMidButton = buttonState && (serverData == null || serverData["return"]["names"] == undefined || Object.keys(serverData["return"]["names"]).length === 0);
     
+    // Simple objects
+    let numformEntries = 
+        serverData != null 
+        && serverData["return"] != null 
+        && serverData["return"]["body"] != undefined 
+        && serverData["return"]["body"]["questions"] != undefined ?  Object.keys(serverData["return"]["body"]["questions"]).length : 0;
+
     document.body.style.overflow = 'hidden';
+
     return (
         <Container
             maxWidth={false}
@@ -549,7 +576,7 @@ const Home = () => {
                         alignItems: 'center', 
                         justifyContent: 'space-between',
 
-                        width: "30%",
+                        width: buttonState ? "30%" : "15%",
                         ml: "15%",
                         mb: '15vh'
                     }}
@@ -619,7 +646,7 @@ const Home = () => {
                         justifyContent: 'center',
                         
                         height: '185px',
-                        mr: '21vh',
+                        mr: windowSize.innerWidth < 1300 || buttonState ? '14vh' : '30vh',
                         mb: '10vh'
                     }}
                     id="right">
