@@ -226,11 +226,13 @@ const Home = () => {
     
     document.addEventListener('keydown', (event) => {
         if (event.key == 'Enter' && readyInput) {
-            let input = document.getElementById("UserInput").value;
-            if (input != null && input != "") {
-                makeActivity(document.getElementById("UserInput").value);
-                setTimeout(() => getNames(setserverData), delayAmt*50);
-            }
+            let temp = form;
+            temp["name"] = document.getElementById("UserInput").value;
+            setForm(temp);
+            // if (input != null && input != "") {
+            //     makeActivity(document.getElementById("UserInput").value);
+            //     setTimeout(() => getNames(setserverData), delayAmt*50);
+            // }
             setTimeout(() => setreadyInput(false), delayAmt);
         }
     });
@@ -383,7 +385,6 @@ const Home = () => {
                     sx={{
                         zIndex: 1,
 
-                        color: 'red',
                         textAlign: 'center',
 
                         position: 'absolute',
@@ -428,7 +429,46 @@ const Home = () => {
                         </Grid>
                                 
                 </Grid>
-            : ""}
+            : form["name"] != null ? 
+                <Grid
+                    container
+                    sx={{
+                        zIndex: 1,
+
+                        bgColor: 'red',
+                        textAlign: 'center',
+
+                        position: 'absolute',
+                        left: "10%",
+                        top: "5%",
+
+                        height: "90vh",
+                        width: "80%",
+
+                        border: 3,
+                        borderColor: '#e0dbce',
+                        borderRadius: '15px'
+                    }}>
+                    <Grid
+                        item
+                        sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            
+                            boxShadow: "0 0 0 max(100vh, 100vw) rgba(0, 0, 0, .6)",
+                            
+                            width: "100%",
+                            height: "100%",
+                            textAlign: "center",
+
+                            bgcolor: "white",
+
+                            borderRadius: '15px'
+                        }}>
+                    </Grid>
+                </Grid> :
+            ""}
 
         </Container>
     )
