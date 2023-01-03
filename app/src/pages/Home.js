@@ -200,35 +200,32 @@ class FormEntry extends React.Component {
                         sx={{
                             display: "flex",
                             alignItems: "center",
-                            width: "90%",
+                            justifyContent: "center",
+                            width: "100%",
                             height: "60%",
-                            // bgcolor: "green",
-
-                            border: 3,
-                            borderColor: '#e0dbce',
-                            borderRadius: '10px',
 
                             m: "10px"
                         }}>
-                        <div style={{
-                            margin: "5px",
-                            fontWeight: "bold",
-                            fontSize: "18px",
-                            fontFamily: "Space Grotesk"
-                        }}>Question</div>
-                        <TextField
-                            id="outlined-multiline-static"
-                            multiline
-                            rows={2}
-                            style={{
-                                position: "relative",
-                                fontFamily: "Space Grotesk",
-                                bottom: "1%",
-                                left: "1%",
-                                margin: "5px",
-                                width: "72%"
-                            }}
-                        />
+                        <FormControl 
+                                sx={{
+                                    width: '90%'
+                                }} 
+                                variant="outlined">
+                                <InputLabel 
+                                    sx={{
+                                        mt: "-10px",
+                                        fontFamily: "Space Grotesk",
+                                        fontSize: '20px'
+                                    }}>
+                                    Question</InputLabel>
+                                <OutlinedInput
+                                    multiline
+                                    rows={3}
+                                    id={"answer"}
+                                    sx={{
+                                        fontFamily: "Space Grotesk"
+                                    }}/>
+                            </FormControl>
                     </Grid>
                     <Grid
                         item
@@ -344,35 +341,32 @@ class FormEntry extends React.Component {
                             sx={{
                                 display: "flex",
                                 alignItems: "center",
+                                justifyContent: 'center',
                                 width: "90%",
                                 height: "60%",
-                                // bgcolor: "green",
-
-                                border: 3,
-                                borderColor: '#e0dbce',
-                                borderRadius: '10px',
 
                                 m: "10px"
                             }}>
-                            <div style={{
-                                margin: "5px",
-                                fontSize: "18px",
-                                fontWeight: "bold",
-                                fontFamily: "Space Grotesk"
-                            }}>Answer</div>
-                            <TextField
-                                id="outlined-multiline-static"
-                                multiline
-                                rows={2}
-                                style={{
-                                    position: "relative",
-                                    fontFamily: "Space Grotesk",
-                                    bottom: "1%",
-                                    left: "1%",
-                                    margin: "5px",
-                                    width: "75%"
-                                }}
-                            />
+                            <FormControl 
+                                sx={{
+                                    width: '90%'
+                                }} 
+                                variant="outlined">
+                                <InputLabel 
+                                    sx={{
+                                        mt: "-10px",
+                                        fontFamily: "Space Grotesk",
+                                        fontSize: '20px'
+                                    }}>
+                                    answer</InputLabel>
+                                <OutlinedInput
+                                    multiline
+                                    rows={3}
+                                    id={"answer"}
+                                    sx={{
+                                        fontFamily: "Space Grotesk"
+                                    }}/>
+                            </FormControl>
                         </Grid> : 
                         <Grid
                             item
@@ -402,6 +396,8 @@ class FormEntry extends React.Component {
                                             }}>
                                             answer {ele + 1}</InputLabel>
                                         <OutlinedInput
+                                            multiline
+                                            rows={1}
                                             id={"answer " + ele}
                                             sx={{
                                                 height: '3.5vh',
