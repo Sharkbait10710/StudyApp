@@ -20,7 +20,6 @@ import {
 import {
     readfromStream
 } from '../utils/utility'
-import { render } from 'react-dom';
 
 const serverUrl = "http://localhost:3001";
 const delayAmt  = 1;
@@ -168,6 +167,15 @@ const Home = () => {
         });
     }, []);
 
+    let userInput = React.useRef();
+
+    document.addEventListener('mousedown', (event) => {
+        try {
+        if (!userInput.current.contains(event.target)) {
+            setreadyInput(false);
+        }} catch (err) {}
+    })
+    
     document.addEventListener('keydown', (event) => {
         if (event.key == 'Enter' && readyInput) {
             let input = document.getElementById("UserInput").value;
@@ -177,8 +185,6 @@ const Home = () => {
             }
             setTimeout(() => setreadyInput(false), delayAmt);
         }
-
-        console.log(serverData["return"]["names"]);
     });
 
     // "listeners"
@@ -261,9 +267,7 @@ const Home = () => {
                                                         () => {
                                                             console.log("name");
                                                             deleteActivity(name);
-                                                            getNames(setserverData);
                                                             setTimeout(() => getNames(setserverData), delayAmt*50);
-                                                            setTimeout(() => setreadyInput(false), delayAmt);
                                                         }
                                                     }/>
                                                 </Grid>
@@ -358,7 +362,9 @@ const Home = () => {
                                 bgcolor: "white",
                                 borderRadius: '15px'
                             }}>
-                                <Input id="UserInput"
+                                <Input 
+                                    id="UserInput"
+                                    ref={userInput}
                                     inputProps= {{
                                         style: { textAlign: 'center' }
                                     }}
@@ -367,7 +373,7 @@ const Home = () => {
 
                                         border: 1,
                                         borderColor: 'green'
-                                }}/>
+                                    }}/>
                         </Grid>
                                 
                 </Grid>
