@@ -226,7 +226,7 @@ const Home = () => {
     
     document.addEventListener('keydown', (event) => {
         if (event.key == 'Enter' && readyInput) {
-            let  = document.getElementById("UserInput").value;
+            let input = document.getElementById("UserInput").value;
             if (input != null && input != "") {
                 makeActivity(document.getElementById("UserInput").value);
                 setTimeout(() => getNames(setserverData), delayAmt*50);
