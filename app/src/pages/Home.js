@@ -110,6 +110,7 @@ class EditButton extends React.Component {
         )
     }
 }
+
 class Item extends React.Component {
     render() {
         return (
@@ -197,6 +198,15 @@ const Home = () => {
         }
     )
 
+    const [form, setForm] = React.useState(
+        () => {
+            return {
+                "name": null
+            };
+        }
+    )
+
+
     React.useEffect(() => {
         WebFont.load({
             google: {
@@ -216,7 +226,7 @@ const Home = () => {
     
     document.addEventListener('keydown', (event) => {
         if (event.key == 'Enter' && readyInput) {
-            let input = document.getElementById("UserInput").value;
+            let  = document.getElementById("UserInput").value;
             if (input != null && input != "") {
                 makeActivity(document.getElementById("UserInput").value);
                 setTimeout(() => getNames(setserverData), delayAmt*50);
