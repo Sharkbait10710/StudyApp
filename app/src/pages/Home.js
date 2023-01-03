@@ -19,7 +19,9 @@ import {
     Grid,
 
     IconButton,
-    Input
+    Input,
+    TextField,
+    Radio
 } from '@mui/material';
 
 import {
@@ -140,15 +142,184 @@ class Item extends React.Component {
     }
 }
 
+class FormEntry extends React.Component {
+    constructor(props)
+    {
+        super(props);
+        this.state = { selection : null };
+    }
+    
+    render() {
+        return (
+            <Grid
+                item
+                sx={{
+                    display: "flex",
+                    justifyContent: "space-evenly",
+                    
+                    width: "95%",
+                    height: "25%",
+                    bgcolor: "white",
+
+                    border: 3,
+                    borderColor: '#e0dbce',
+                    borderRadius: '30px',
+
+                    m: "10px"
+                }}>
+                <Grid
+                    item
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                        
+                        width: "45%",
+                        height: "90%",
+                        // bgcolor: "blue",
+
+                        border: 3,
+                        borderColor: '#e0dbce',
+                        borderRadius: '30px',
+
+                        m: "10px"
+                }}>
+                    <Grid
+                        item
+                        sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            width: "90%",
+                            height: "60%",
+                            // bgcolor: "green",
+
+                            border: 3,
+                            borderColor: '#e0dbce',
+                            borderRadius: '10px',
+
+                            m: "10px"
+                        }}>
+                        <div style={{
+                            margin: "5px",
+                            fontSize: "18px",
+                            fontWeight: "bold",
+                            fontFamily: "Space Grotesk"
+                        }}>Question</div>
+                        <TextField
+                            id="outlined-multiline-static"
+                            multiline
+                            rows={2}
+                            style={{
+                                position: "relative",
+                                fontFamily: "Space Grotesk",
+                                bottom: "16%",
+                                left: "1%",
+                                fontSize: "10px",
+    
+                                width: "75%",
+                                height: "60%"
+                            }}
+                        />
+                    </Grid>
+                    <Grid
+                        item
+                        sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            width: "90%",
+                            // bgcolor: "green",
+
+                            border: 3,
+                            borderColor: '#e0dbce',
+                            borderRadius: '10px',
+
+                            m: "10px"
+                        }}>
+                        <div style={{
+                            margin: "5px",
+                            fontSize: "18px",
+                            fontWeight: "bold",
+                            fontFamily: "Space Grotesk"
+                        }}>Type</div>
+                        <div>
+                        <Radio
+                            checked={this.state.selection == 0}
+                            onChange={(event) => {
+                                    console.log(event.target.value)
+                                    this.setState({selection: event.target.value});
+                                }}
+                            value="0"
+                            name="radio-buttons"
+                            inputProps={{ 'aria-label': 'A' }}
+                        />
+                        <Radio
+                            checked={this.state.selection == 1}
+                            onChange={(event) => {
+                                console.log(event.target.value)
+                                this.setState({selection: event.target.value});
+                            }}
+                            value="1"
+                            name="radio-buttons"
+                            inputProps={{ 'aria-label': 'B' }}
+                        />
+                        </div>
+                    </Grid>
+                </Grid>
+                <Grid
+                    item
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                        
+                        width: "45%",
+                        height: "90%",
+                        // bgcolor: "red",
+
+                        border: 3,
+                        borderColor: '#e0dbce',
+                        borderRadius: '30px',
+
+                        m: "10px"
+                    }}>
+                    <Grid
+                        item
+                        sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            width: "90%",
+                            height: "40%",
+                            // bgcolor: "green",
+
+                            border: 3,
+                            borderColor: '#e0dbce',
+                            borderRadius: '10px',
+
+                            m: "10px"
+                        }}>
+                        <div style={{
+                            margin: "5px",
+                            fontSize: "18px",
+                            fontWeight: "bold",
+                            fontFamily: "Space Grotesk"
+                        }}>Answer</div>
+                    </Grid>
+                </Grid>
+            </Grid>
+        )
+    }
+}
+
 const getNames = (setFunction) => {
     getServerdata(serverUrl + "/database/names", setFunction);
 }
 
-const makeActivity = (name) => {
+const makeActivity = (name, data) => {
     makePost(serverUrl + "/database/new", {
         "name": name,
         "body": JSON.stringify({
-            "test": "test"
+            "questions": data
         })
     });
 }
@@ -198,6 +369,12 @@ const Home = () => {
         }
     )
 
+    const [showForm, setshowForm] = React.useState(
+        () => {
+            return false;
+        }
+    )
+
     const [form, setForm] = React.useState(
         () => {
             return {
@@ -229,6 +406,7 @@ const Home = () => {
             let temp = form;
             temp["name"] = document.getElementById("UserInput").value;
             setForm(temp);
+            setshowForm(true);
             // if (input != null && input != "") {
             //     makeActivity(document.getElementById("UserInput").value);
             //     setTimeout(() => getNames(setserverData), delayAmt*50);
@@ -236,7 +414,7 @@ const Home = () => {
             setTimeout(() => setreadyInput(false), delayAmt);
         }
     });
-
+    
     // "listeners"
     let showSideAdd = buttonState && serverData != null && serverData["return"]["names"] != undefined && Object.keys(serverData["return"]["names"]).length !== 0;
     let showMidButton = buttonState && (serverData == null || serverData["return"]["names"] == undefined || Object.keys(serverData["return"]["names"]).length === 0);
@@ -453,9 +631,8 @@ const Home = () => {
                         item
                         sx={{
                             display: "flex",
+                            flexDirection: "column",
                             alignItems: "center",
-                            justifyContent: "center",
-                            
                             boxShadow: "0 0 0 max(100vh, 100vw) rgba(0, 0, 0, .6)",
                             
                             width: "100%",
@@ -466,6 +643,8 @@ const Home = () => {
 
                             borderRadius: '15px'
                         }}>
+                            {showForm ? 
+                            <FormEntry />: ""}
                     </Grid>
                 </Grid> :
             ""}
