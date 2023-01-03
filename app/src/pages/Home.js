@@ -8,6 +8,7 @@ import './style.css';
 
 import ArrowBackIosNewIcon  from '@mui/icons-material/ArrowBackIosNew'
 import AddIcon              from '@mui/icons-material/Add'
+import AddCircleIcon        from '@mui/icons-material/AddCircle';
 import RemoveIcon           from '@mui/icons-material/Remove'
 import CreateIcon           from '@mui/icons-material/Create'
 
@@ -224,6 +225,9 @@ class FormEntry extends React.Component {
                                     id={"answer"}
                                     sx={{
                                         fontFamily: "Space Grotesk"
+                                    }}
+                                    inputProps={{
+                                        defaultValue: this.props.question
                                     }}/>
                             </FormControl>
                     </Grid>
@@ -365,6 +369,9 @@ class FormEntry extends React.Component {
                                     id={"answer"}
                                     sx={{
                                         fontFamily: "Space Grotesk"
+                                    }}
+                                    inputProps={{
+                                        defaultValue: this.props.answer[0]
                                     }}/>
                             </FormControl>
                         </Grid> : 
@@ -402,6 +409,9 @@ class FormEntry extends React.Component {
                                             sx={{
                                                 height: '3.5vh',
                                                 fontFamily: "Space Grotesk"
+                                            }}
+                                            inputProps={{
+                                                defaultValue: this.props.answer[ele]
                                             }}/>
                                     </FormControl>
                                 </Grid>
@@ -422,7 +432,7 @@ const makeActivity = (name, data) => {
     makePost(serverUrl + "/database/new", {
         "name": name,
         "body": JSON.stringify({
-            "questions": data
+            data
         })
     });
 }
@@ -501,7 +511,7 @@ function getWindowSize() {
     const [form, setForm] = React.useState(
         () => {
             return {
-                "questions": null
+                "name": null
             };
         }
     )
@@ -527,6 +537,19 @@ function getWindowSize() {
         if (event.key == 'Enter' && readyInput) {
             let temp = form;
             temp["name"] = document.getElementById("UserInput").value;
+            temp["size"] = 1;
+            temp["questions"] = {
+                0: {
+                    "question": "",
+                    "answer": [
+                        "",
+                        "",
+                        "",
+                        ""
+                    ],
+                    "type": "FR"
+                }
+            };
             setForm(temp);
             setshowForm(true);
             // if (input != null && input != "") {
@@ -774,7 +797,49 @@ function getWindowSize() {
                             borderRadius: '15px'
                         }}>
                             {showForm ? 
-                            <FormEntry />: ""}
+                            <Grid
+                                item
+                                sx={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: "center",
+                                    boxShadow: "0 0 0 max(100vh, 100vw) rgba(0, 0, 0, .6)",
+                                    
+                                    width: "100%",
+                                    height: "100%",
+                                    textAlign: "center",
+        
+                                    bgcolor: "white",
+        
+                                    borderRadius: '15px'
+                                }}>
+                                <FormEntry question="fasraer" answer={["0", "1", "2", "3"]}/>
+                                <Grid
+                                    item
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        width: "95%",
+                                        height: "10vh",
+
+                                        border: 3,
+                                        borderStyle: 'dotted',
+                                        borderRadius: '20px',
+                                        borderColor: '#e0dbce'
+                                    }}>
+                                    <IconButton
+                                        onClick={() => {
+                                        }}
+                                        sx = {{
+                                            transform: "scale(1.7)",
+                                            color: "#fa5f2f"
+                                        }}>
+                                        <AddCircleIcon/>
+                                    </IconButton>
+                                </Grid>
+                            </Grid>
+                            : ""}
                     </Grid>
                 </Grid> :
             ""}
