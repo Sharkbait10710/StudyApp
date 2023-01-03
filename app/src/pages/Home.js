@@ -188,11 +188,6 @@ class FormEntry extends React.Component {
                         
                         width: "45%",
                         height: "90%",
-                        // bgcolor: "blue",
-
-                        border: 3,
-                        borderColor: '#e0dbce',
-                        borderRadius: '30px',
 
                         m: "10px"
                 }}>
@@ -817,7 +812,10 @@ function getWindowSize() {
         
                                     bgcolor: "white",
         
-                                    borderRadius: '15px'
+                                    borderRadius: '15px',
+
+                                    overflowY: "scroll",
+                                    overflowX: "hidden"
                                 }}>
                                 {
                                 Object.keys(form["questions"]).map((ele) => {
