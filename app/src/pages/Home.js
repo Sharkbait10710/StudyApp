@@ -270,7 +270,7 @@ class FormEntry extends React.Component {
                                 <Radio
                                     checked={this.state.radio===0}
                                     onChange={(event) => {
-                                            this.setState({radio: event.target.value});
+                                            this.setState({radio: 0});
                                         }}
                                     value="0"
                                     name="radio-buttons"
@@ -295,7 +295,7 @@ class FormEntry extends React.Component {
                                 <Radio
                                     checked={this.state.radio===1}
                                     onChange={(event) => {
-                                        this.setState({radio: event.target.value});
+                                        this.setState({radio: 1});
                                     }}
                                     value="1"
                                     name="radio-buttons"
@@ -317,8 +317,9 @@ class FormEntry extends React.Component {
                                     fontFamily: "Space Grotesk"
                                 }}>
                                 <Checkbox
-                                    checked={this.state.checkbox===1}
-                                    onChange={() => {
+                                    checked={this.state.checkbox==1}
+                                    onClick={() => {
+                                        console.log("radio", this.state.checkbox);
                                         this.setState({checkbox: !this.state.checkbox})
                                     }}
                                     value="1"
@@ -500,6 +501,12 @@ const Home = () => {
             return null;
         }
     )
+    
+    const [activityData, setactivityData] = React.useState(
+        () => {
+            return null;
+        }
+    )
 
     const [problem, setProblem] = React.useState(
         () => {
@@ -563,7 +570,6 @@ const Home = () => {
                 setTimeout(() => {
                     temp["questions"][ele]["type"] = document.getElementById("form type " + ele).getAttribute("value1")===0 ? "FR" : "MC";
                     temp["questions"][ele]["Latex"] = document.getElementById("form type " + ele).getAttribute("value2")===0 ? false : true;
-
                 }, delayAmt);
             })
         }
@@ -573,6 +579,8 @@ const Home = () => {
             setreadyInput(false);
             setshowForm(false);
             setForm({"name": null});
+            setactivityData(null);
+            setProblem(null);
         } else if (event.key==='Enter' && readyInput) {
             if (document.getElementById("UserInput").value==="") {
                 setreadyInput(false);
@@ -650,7 +658,7 @@ const Home = () => {
                         ml: windowSize.innerWidth < 1236 ? "5%" : "25vh",
                         mb: '15vh'
                     }}
-                    id="left">
+                    id="lef t">
                         <Grid
                             container 
                             sx = {{
@@ -703,8 +711,17 @@ const Home = () => {
                                                                 return response.json();
                                                             })
                                                             .then((response) => {
-                                                                let randNum = Math.max(0, Math.floor(Math.random()*Object.keys(response["return"]).length - 1));
-                                                                setProblem(response["return"][String(randNum)]);
+                                                                var arr = [];
+                                                                while(arr.length < Object.keys(response["return"]).length){
+                                                                    var r = Math.max(0, Math.floor(Math.random()*Object.keys(response["return"]).length - 1));
+                                                                    if(arr.indexOf(r) === -1) arr.push(r);
+                                                                }
+                                                                setactivityData(response["return"]);
+                                                                setProblem({
+                                                                    "randomList": arr,
+                                                                    "probNum": 0,
+                                                                    "problem": response["return"]["0"]
+                                                                });
                                                             })
                                                         }}
                                                         />
@@ -947,7 +964,7 @@ const Home = () => {
                         Commit
                     </Button>
                 </Grid> :
-            problem != null ? 
+            activityData != null ? 
                 <Grid
                 container
                 sx={{
@@ -983,7 +1000,208 @@ const Home = () => {
 
                         borderRadius: '15px'
                     }}>
-                        {JSON.stringify(problem)}
+                        <Grid
+                            item
+                            sx={{
+                                display: 'flex',
+                                flexGrow: 1,
+
+                                fontFamily: 'Space Grotesk',
+                                overflowWrap: 'break-word',
+                                overflow: 'hidden',
+
+                                width: "95%",
+
+                                m: "10px",
+                                p: "6px",
+
+                                border: 3,
+                                borderColor: '#e0dbce',
+                                borderRadius: '15px'
+                            }}>
+                            <Grid
+                                item
+                                sx={{
+                                    width: "20%",
+                                    fontSize: "30px",
+                                    fontWeight: "bold",
+
+                                    p: "4px"
+                                }}>
+                                Question:
+                            </Grid>
+                            <Grid
+                                item
+                                sx={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    
+                                    width: "79%",
+                                    fontSize: "18px",
+                                    
+                                    ml: "5px",
+                                    mt: "8px",
+                                    p: "4px"
+                                }}>
+                                {problem["problem"]["question"]}
+                            </Grid>
+                        </Grid>
+                        {problem["problem"]["Latex"] ?
+                            <Grid 
+                                item
+                                sx={{
+                                    display: 'flex',
+                                flexGrow: 1,
+
+                                fontFamily: 'Space Grotesk',
+                                fontStyle: 'italic',
+
+                                overflowWrap: 'break-word',
+                                overflow: 'hidden',
+
+                                width: "95%",
+
+                                m: "10px",
+                                p: "6px",
+
+                                border: 3,
+                                borderColor: '#e0dbce',
+                                borderRadius: '15px'
+
+                                }}>
+                                <Grid
+                                    item
+                                    sx={{
+                                        fontFamily: 'Space Grotesk',
+                                        display: "absolute"
+                                    }}>
+                                        Latex
+                                </Grid>
+                            </Grid>
+                        : ""}
+                        {problem["problem"]["type"] == "MC" ? 
+                            <Grid 
+                                item
+                                sx={{
+                                    flexGrow: 1,
+                                    display: 'flex',
+                                    fontFamily: 'Space Grotesk',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-evenly',
+                                    width: "95%",
+                                    
+                                    m: "10px",
+                                    p: "6px",
+
+                                    border: 3,
+                                    borderColor: '#e0dbce',
+                                    borderRadius: '15px'
+                                }}>
+                                    <Grid
+                                        item
+                                        sx={{
+                                            display: 'flex',
+                                            fontFamily: 'Space Grotesk',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            width: "20%",
+                                            height: "95%",
+                                            bgcolor: '#ff7b00',
+
+                                            color: 'white',
+
+                                            borderRadius: '15px'
+                                        }}>
+                                        {problem["problem"]["type"] == "MC" ? problem["problem"]["answer"][0] : ""}
+                                    </Grid>
+                                    <Grid
+                                        item
+                                        sx={{
+                                            display: 'flex',
+                                            fontFamily: 'Space Grotesk',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+
+                                            width: "20%",
+                                            height: "95%",
+                                            bgcolor: '#56c90e',
+
+                                            color: 'white',
+
+                                            borderRadius: '15px'
+                                        }}>
+                                        {problem["problem"]["type"] == "MC" ? problem["problem"]["answer"][1] : ""}
+                                    </Grid>
+                                    <Grid
+                                        item
+                                        sx={{
+                                            display: 'flex',
+                                            fontFamily: 'Space Grotesk',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+
+                                            width: "20%",
+                                            height: "95%",
+                                            bgcolor: '#09cfd6',
+
+                                            color: 'white',
+
+                                            borderRadius: '15px'
+                                        }}>
+                                        {problem["problem"]["type"] == "MC" ? problem["problem"]["answer"][2] : ""}
+                                    </Grid>
+                                    <Grid
+                                        item
+                                        sx={{
+                                            display: 'flex',
+                                            fontFamily: 'Space Grotesk',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+
+                                            width: "20%",
+                                            height: "95%",
+                                            bgcolor: '#e827c5',
+
+                                            color: 'white',
+                                            borderRadius: '15px'
+                                        }}>
+                                        {problem["problem"]["type"] == "MC" ? problem["problem"]["answer"][3] : ""}
+                                    </Grid>
+                            </Grid>
+                        : ""}
+                        <Grid
+                            item
+                            sx={{
+                                width: "90%",
+                                display: 'flex',
+                                flexGrow: 1,
+                                fontFamily: 'Space Grotesk',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}>
+                            <FormControl 
+                                sx={{
+                                    width: '90%'
+                                }} 
+                                variant="outlined">
+                                <InputLabel 
+                                    sx={{
+                                        mt: "-10px",
+                                        fontFamily: "Space Grotesk",
+                                        fontSize: '20px'
+                                    }}>
+                                    Answer</InputLabel>
+                                <OutlinedInput
+                                    multiline
+                                    rows={3}
+                                    onChange={(event) => {
+                                        // this.setState({question: event.target.value});
+                                    }}
+                                    sx={{
+                                        fontFamily: "Space Grotesk"
+                                    }}/>
+                            </FormControl>
+                        </Grid>
                 </Grid>
             </Grid>
             : ""}
