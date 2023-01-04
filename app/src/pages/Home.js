@@ -544,6 +544,19 @@ function getWindowSize() {
         }} catch (err) {}
     })
     
+    document.addEventListener('mouseup', (event) => {
+        if (showForm) {
+            let temp = form;
+            Object.keys(form["questions"]).map((ele) => {
+                setTimeout(() => {
+                    temp["questions"][ele]["type"] = document.getElementById("form type " + ele).getAttribute("value1") == 0 ? "FR" : "MC";
+                    temp["questions"][ele]["Latex"] = document.getElementById("form type " + ele).getAttribute("value2") == 0 ? false : true;
+
+                    console.log(temp);
+                }, delayAmt);
+            })
+        }
+    })
     document.addEventListener('keydown', (event) => {
         if (event.key == 'Enter' && readyInput) {
             if (document.getElementById("UserInput").value == "") {
@@ -571,13 +584,9 @@ function getWindowSize() {
             setTimeout(() => setreadyInput(false), delayAmt);
         } else if (showForm) {
             let temp = form;
-            // console.log("forrrmm1", document.getElementById("form type 0").getAttribute("value1"));
-            // console.log("forrrmm2", document.getElementById("form type 0").getAttribute("value2"));
             Object.keys(form["questions"]).map((ele) => {
                 setTimeout(() => {
                     temp["questions"][ele]["question"] = document.getElementById("form question " + ele).value;
-                    temp["questions"][ele]["type"] = document.getElementById("form type " + ele).getAttribute("value1") == 0 ? "FR" : "MC";
-                    temp["questions"][ele]["Latex"] = document.getElementById("form type " + ele).getAttribute("value2") == 0 ? false : true;
 
                     for (let i = 0; i < temp["questions"][ele]["answer"].length; i++) {
                         try {
@@ -585,7 +594,6 @@ function getWindowSize() {
                         } catch (err) {}
                     }
 
-                    console.log(temp);
                 }, delayAmt);
             })
         }
