@@ -1,8 +1,8 @@
 import * as React   from 'react';
-import CreateIcon   from '@mui/icons-material/Create'
+import RemoveIcon   from '@mui/icons-material/Remove'
 import {IconButton} from '@mui/material';
 
-class EditButton extends React.Component {
+class RemoveButton extends React.Component {
     render() {
         return (
             <IconButton
@@ -19,10 +19,10 @@ class EditButton extends React.Component {
                     ml: "5px",
                     mr: "5px"
                 }}>
-                <CreateIcon/>
+                <RemoveIcon/>
             </IconButton>
         )
     }
 }
 
-export default EditButton;
+export default RemoveButton;

@@ -1,6 +1,6 @@
-import * as React from 'react';
+import * as React           from 'react';
 import ArrowBackIosNewIcon  from '@mui/icons-material/ArrowBackIosNew'
-import {IconButton} from '@mui/material';
+import {IconButton}         from '@mui/material';
 
 class AccessButton extends React.Component {
     render() {
