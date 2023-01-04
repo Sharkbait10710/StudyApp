@@ -558,7 +558,11 @@ function getWindowSize() {
         }
     })
     document.addEventListener('keydown', (event) => {
-        if (event.key == 'Enter' && readyInput) {
+        if (event.key == `Escape`) {
+            setreadyInput(false);
+            setshowForm(false);
+            setForm({"name": null});
+        } else if (event.key == 'Enter' && readyInput) {
             if (document.getElementById("UserInput").value == "") {
                 setreadyInput(false);
                 return;
@@ -898,7 +902,10 @@ function getWindowSize() {
                     <Button 
                         onClick={() => {
                             makeActivity(form["name"], form["questions"]);
-                            setshowForm(false);
+                            setTimeout(() => {
+                                setshowForm(false);
+                                setForm({"name": null});
+                            })
                         }}
                         variant="contained" 
                         endIcon={<LabelImportantIcon />}
