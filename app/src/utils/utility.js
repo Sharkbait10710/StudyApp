@@ -8,7 +8,6 @@ export const readfromStream = (response, retArr = []) => {
                 // When no more data needs to be consumed, close the stream
                 if (done) {
                     controller.close();
-                    console.log(retArr)
                     return retArr;
                 } else {
                     let val = String.fromCharCode.apply(null, value);

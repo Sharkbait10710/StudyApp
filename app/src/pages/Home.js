@@ -45,7 +45,7 @@ class AccessButton extends React.Component {
         return (
             <IconButton
                 onClick={() => {
-                    let _ = !this.props.cond ? getNames(this.props.runFunction) : 1 == 1;
+                    let _ = !this.props.cond ? getNames(this.props.runFunction) : 1===1;
                     setTimeout(() => this.props.setFunction(!this.props.cond), delayAmt*10);
                 }}
                 sx = {{
@@ -141,7 +141,9 @@ class Item extends React.Component {
                 
                 }}>
                     <Link 
-                        to={this.props.src}
+                        onClick={
+                            () => this.props.runFunction()
+                        }
                         style={{
                         }}>
                             <Textfit mode="single">{this.props.text}</Textfit>
@@ -219,7 +221,6 @@ class FormEntry extends React.Component {
                                     multiline
                                     rows={3}
                                     onChange={(event) => {
-                                        console.log(event.target.value);
                                         this.setState({question: event.target.value});
                                     }}
                                     id={"form question " + this.props.id}
@@ -267,7 +268,7 @@ class FormEntry extends React.Component {
                                     fontFamily: "Space Grotesk"
                                 }}>
                                 <Radio
-                                    checked={this.state.radio == 0}
+                                    checked={this.state.radio===0}
                                     onChange={(event) => {
                                             this.setState({radio: event.target.value});
                                         }}
@@ -292,7 +293,7 @@ class FormEntry extends React.Component {
                                     fontFamily: "Space Grotesk"
                                 }}>
                                 <Radio
-                                    checked={this.state.radio == 1}
+                                    checked={this.state.radio===1}
                                     onChange={(event) => {
                                         this.setState({radio: event.target.value});
                                     }}
@@ -316,7 +317,7 @@ class FormEntry extends React.Component {
                                     fontFamily: "Space Grotesk"
                                 }}>
                                 <Checkbox
-                                    checked={this.state.checkbox == 1}
+                                    checked={this.state.checkbox===1}
                                     onChange={() => {
                                         this.setState({checkbox: !this.state.checkbox})
                                     }}
@@ -344,7 +345,7 @@ class FormEntry extends React.Component {
 
                         m: "10px"
                     }}>
-                    { this.state.radio == 0 ?
+                    { this.state.radio===0 ?
                         <Grid
                             item
                             sx={{
@@ -433,6 +434,10 @@ const getNames = (setFunction) => {
     getServerdata(serverUrl + "/database/names", setFunction);
 }
 
+const getActivity = (setFunction, name) => {
+    getServerdata(serverUrl + "/database/name/" + name, setFunction);
+}
+
 const makeActivity = (name, data) => {
     makePost(serverUrl + "/database/new", {
         "name": name,
@@ -452,9 +457,10 @@ const deleteActivity = (name) => {
 const getServerdata = (url, setFunction) => {
     fetch(url)
     .then((response) => {
-        let arr = [];
-        readfromStream(response, arr);
-        setTimeout(() => setFunction(JSON.parse(arr[0]), delayAmt));
+        return response.json();
+    })
+    .then((response) => {
+        setFunction(response);
     })
 }
 
@@ -472,24 +478,30 @@ const Home = () => {
     
     const [windowSize, setWindowSize] = React.useState(getWindowSize());
 
-  React.useEffect(() => {
-    function handleWindowResize() {
-      setWindowSize(getWindowSize());
+    React.useEffect(() => {
+        function handleWindowResize() {
+        setWindowSize(getWindowSize());
+        }
+
+        window.addEventListener('resize', handleWindowResize);
+
+        return () => {
+        window.removeEventListener('resize', handleWindowResize);
+        };
+    }, []);
+
+    function getWindowSize() {
+        const {innerWidth, innerHeight} = window;
+        return {innerWidth, innerHeight};
     }
 
-    window.addEventListener('resize', handleWindowResize);
+    const [activityNames, setactivityNames] = React.useState(
+        () => {
+            return null;
+        }
+    )
 
-    return () => {
-      window.removeEventListener('resize', handleWindowResize);
-    };
-  }, []);
-
-function getWindowSize() {
-  const {innerWidth, innerHeight} = window;
-  return {innerWidth, innerHeight};
-}
-
-    const [serverData, setserverData] = React.useState(
+    const [problem, setProblem] = React.useState(
         () => {
             return null;
         }
@@ -536,7 +548,7 @@ function getWindowSize() {
     }, []);
 
     let userInput = React.useRef();
-
+    
     document.addEventListener('mousedown', (event) => {
         try {
         if (!userInput.current.contains(event.target)) {
@@ -549,21 +561,20 @@ function getWindowSize() {
             let temp = form;
             Object.keys(form["questions"]).map((ele) => {
                 setTimeout(() => {
-                    temp["questions"][ele]["type"] = document.getElementById("form type " + ele).getAttribute("value1") == 0 ? "FR" : "MC";
-                    temp["questions"][ele]["Latex"] = document.getElementById("form type " + ele).getAttribute("value2") == 0 ? false : true;
+                    temp["questions"][ele]["type"] = document.getElementById("form type " + ele).getAttribute("value1")===0 ? "FR" : "MC";
+                    temp["questions"][ele]["Latex"] = document.getElementById("form type " + ele).getAttribute("value2")===0 ? false : true;
 
-                    console.log(temp);
                 }, delayAmt);
             })
         }
     })
     document.addEventListener('keydown', (event) => {
-        if (event.key == `Escape`) {
+        if (event.key===`Escape`) {
             setreadyInput(false);
             setshowForm(false);
             setForm({"name": null});
-        } else if (event.key == 'Enter' && readyInput) {
-            if (document.getElementById("UserInput").value == "") {
+        } else if (event.key==='Enter' && readyInput) {
+            if (document.getElementById("UserInput").value==="") {
                 setreadyInput(false);
                 return;
             }
@@ -604,8 +615,8 @@ function getWindowSize() {
     });
     
     // "listeners"
-    let showSideAdd = buttonState && serverData != null && serverData["return"]["names"] != undefined && Object.keys(serverData["return"]["names"]).length !== 0;
-    let showMidButton = buttonState && (serverData == null || serverData["return"]["names"] == undefined || Object.keys(serverData["return"]["names"]).length === 0);
+    let showSideAdd = buttonState && activityNames != null && activityNames["return"]["names"] != undefined && Object.keys(activityNames["return"]["names"]).length !== 0;
+    let showMidButton = buttonState && (activityNames===null || activityNames["return"]["names"]===undefined || Object.keys(activityNames["return"]["names"]).length === 0);
 
     document.body.style.overflow = 'hidden';
 
@@ -652,7 +663,7 @@ function getWindowSize() {
                             {showSideAdd ? <AddButton cond={showSideAdd} setFunction={setreadyInput}/> : 
                             <AccessButton 
                             cond={buttonState} 
-                            runFunction={setserverData} 
+                            runFunction={setactivityNames} 
                             setFunction={setbuttonState}/>}
                         </Grid>
 
@@ -666,7 +677,7 @@ function getWindowSize() {
                                         flexDirection: 'column'
                                     }}>
                                         {
-                                            Object.keys(serverData["return"]["names"]).map(
+                                            Object.keys(activityNames["return"]["names"]).map(
                                                 (name) => 
                                                 <Grid
                                                     item
@@ -684,11 +695,23 @@ function getWindowSize() {
                                                     key={"Grid " + name}
                                                     >
                                                     <EditButton />
-                                                    <Item text={name}/>
+                                                    <Item 
+                                                        text={name}
+                                                        runFunction={() => {
+                                                            fetch(serverUrl + "/database/name/" + name)
+                                                            .then((response) => {
+                                                                return response.json();
+                                                            })
+                                                            .then((response) => {
+                                                                let randNum = Math.max(0, Math.floor(Math.random()*Object.keys(response["return"]).length - 1));
+                                                                setProblem(response["return"][String(randNum)]);
+                                                            })
+                                                        }}
+                                                        />
                                                     <RemoveButton runFunction={
                                                         () => {
                                                             deleteActivity(name);
-                                                            setTimeout(() => getNames(setserverData), delayAmt*50);
+                                                            setTimeout(() => getNames(setactivityNames), delayAmt*50);
                                                         }
                                                     }/>
                                                 </Grid>
@@ -924,7 +947,46 @@ function getWindowSize() {
                         Commit
                     </Button>
                 </Grid> :
-            ""}
+            problem != null ? 
+                <Grid
+                container
+                sx={{
+                    zIndex: 1,
+
+                    bgColor: 'red',
+                    textAlign: 'center',
+
+                    position: 'absolute',
+                    left: "10%",
+                    top: "5%",
+
+                    height: "90vh",
+                    width: "80%",
+
+                    border: 3,
+                    borderColor: '#e0dbce',
+                    borderRadius: '15px'
+                }}>
+                <Grid
+                    item
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        boxShadow: "0 0 0 max(100vh, 100vw) rgba(0, 0, 0, .1)",
+                        
+                        width: "100%",
+                        height: "100%",
+                        textAlign: "center",
+
+                        bgcolor: "white",
+
+                        borderRadius: '15px'
+                    }}>
+                        {JSON.stringify(problem)}
+                </Grid>
+            </Grid>
+            : ""}
 
         </Container>
     )

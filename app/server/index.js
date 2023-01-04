@@ -20,7 +20,6 @@ const defaultData = {
 
 app.get('/database/:reqType', (req, res) => {
   fs.readFile("database/database.json", function(err, data) {
-    console.log("getting")
     if (err) {
       if (!fs.existsSync('./database')) {
         fs.mkdirSync('./database');
@@ -39,6 +38,15 @@ app.get('/database/:reqType', (req, res) => {
     }
   });
 });
+
+app.get('/database/name/:name', (req,res) => {
+  fs.readFile("database/database.json", function(err, data) {
+    if (err) throw err;
+    res.end(JSON.stringify({
+      "return": JSON.parse(JSON.parse(buffertoStr(data))[req.params["name"]])["data"]
+    }))
+  })
+})
 
 app.post('/database/:reqType', jsonParser, function requestHandler(req, res) {
   console.log("posting")
