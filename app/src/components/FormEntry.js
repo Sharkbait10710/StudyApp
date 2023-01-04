@@ -203,7 +203,7 @@ class FormEntry extends React.Component {
 
                         m: "10px"
                     }}>
-                    { this.state.radio===0 ?
+                    { this.state.radio==0 ?
                         <Grid
                             item
                             sx={{

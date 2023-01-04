@@ -42,14 +42,15 @@ app.get('/database/:reqType', (req, res) => {
 app.get('/database/name/:name', (req,res) => {
   fs.readFile("database/database.json", function(err, data) {
     if (err) throw err;
+    let retJSON = JSON.parse(JSON.parse(buffertoStr(data))[req.params["name"]]);
+    retJSON["name"] = req.params["name"];
     res.end(JSON.stringify({
-      "return": JSON.parse(JSON.parse(buffertoStr(data))[req.params["name"]])["data"]
+      "return": retJSON
     }))
   })
 })
 
 app.post('/database/:reqType', jsonParser, function requestHandler(req, res) {
-  console.log("posting")
   const write = () => {
     switch(req.params["reqType"]) {
       case "new": {
@@ -67,10 +68,10 @@ app.post('/database/:reqType', jsonParser, function requestHandler(req, res) {
           } else {
             if (fileData[req.body["name"]] == undefined) {
               fileData["size"] += 1;
-              fileData["names"][[req.body["name"]]] = req.body["name"];
-              fileData[req.body["name"]] = req.body["body"];
-              writeJSON("database/database.json", fileData);
             }
+            fileData["names"][[req.body["name"]]] = req.body["name"];
+            fileData[req.body["name"]] = req.body["body"];
+            writeJSON("database/database.json", fileData);
           }
         })
         break;
@@ -93,6 +94,9 @@ app.post('/database/:reqType', jsonParser, function requestHandler(req, res) {
         break;
       }
     }
+    res.end(JSON.stringify({
+      "return": "complete"
+    }))
   };
 
   if (!fs.existsSync('./database')) {
