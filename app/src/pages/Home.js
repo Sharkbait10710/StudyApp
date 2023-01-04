@@ -636,7 +636,7 @@ function getWindowSize() {
                         justifyContent: 'space-between',
 
                         width: buttonState ? "30%" : "15%",
-                        ml: "15%",
+                        ml: windowSize.innerWidth < 1236 ? "5%" : "25vh",
                         mb: '15vh'
                     }}
                     id="left">
@@ -705,7 +705,7 @@ function getWindowSize() {
                         justifyContent: 'center',
                         
                         height: '185px',
-                        mr: windowSize.innerWidth < 1300 || buttonState ? '14vh' : '30vh',
+                        mr: windowSize.innerWidth < 1500 < 1100 ? '5vh' : windowSize.innerWidth < 1500 ? '10vh' : '33vh',
                         mb: '10vh'
                     }}
                     id="right">
