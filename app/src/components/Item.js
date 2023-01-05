@@ -17,15 +17,24 @@ class Item extends React.Component {
                     fontSize: '20px',
 
                     width: '75%',
-
-                    overFlowX: "hidden",
-                    whiteSpace: "nowrap",
-                    textOverflow: "ellipsis",
-                    display: "block",
+                    
                     overflow: "hidden"
                 
                 }}>
-                    {this.props.text}
+                    <div
+                        onClick={
+                            () => this.props.runFunction()
+                        }
+                        className="multipleChoice"
+                        style={{
+                            overFlowX: "hidden",
+                            whiteSpace: "nowrap",
+                            textOverflow: "ellipsis",
+                            display: "block",
+                            overflow: "hidden"
+                        }}>
+                        {this.props.text}
+                    </div>
                     {/* <Link 
                         onClick={
                             () => this.props.runFunction()

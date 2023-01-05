@@ -19,6 +19,8 @@ import Activity                 from '../components/Activity'
 
 import { randomizenatList }     from '../utils/utility'
 
+import background               from "../imgs/bgImage2.jpg";
+
 const serverUrl = "http://localhost:3001";
 const delayAmt  = 1;
 
@@ -247,7 +249,15 @@ const Home = () => {
                 display: 'flex',
                 justifyContent: 'center',
 
-                height: '98vh'}}>
+                position: 'absolute',
+                left: '0%',
+                top: '0%',
+
+                height: '100vh'}}
+            style={{
+                backgroundImage: `url(${background})`
+
+            }}>
             
             <Grid 
                 container
@@ -267,7 +277,7 @@ const Home = () => {
                         justifyContent: 'space-between',
 
                         width:  "30%",
-                        ml: windowSize.innerWidth < 1300 ? '0vh' : "25vh",
+                        ml: windowSize.innerWidth < 1300 ? '0vh' : "13vh",
                         mb: '15vh'
                     }}
                     id="left">
@@ -343,7 +353,7 @@ const Home = () => {
                         
                         height: '185px',
                         mt: windowSize.innerWidth < 1300 ? '8vh' : '0vh',
-                        mr: windowSize.innerWidth < 1300 ? '0vh' : '37vh',
+                        mr: windowSize.innerWidth < 1300 ? '0vh' : '50vh',
                         mb: '10vh'
                     }}
                     id="right">
