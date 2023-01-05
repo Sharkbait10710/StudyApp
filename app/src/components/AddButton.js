@@ -12,7 +12,8 @@ class AddButton extends React.Component {
                 sx = {{
                     border: 1,
                     transform: "scale(1.7)",
-                    mr: this.props.cond ? '16px' : "auto"
+                    ml: "17%",
+                    mr: this.props.cond ? "auto" : "50%"
                 }}>
                 <AddIcon/>
             </IconButton>

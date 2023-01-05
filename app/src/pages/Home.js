@@ -246,14 +246,14 @@ const Home = () => {
             sx={{
                 display: 'flex',
                 justifyContent: 'center',
-                
+
                 height: '98vh'}}>
             
             <Grid 
                 container
                 sx = {{
                     display: 'flex',
-                    flexDirection: 'row',
+                    flexDirection: windowSize.innerWidth < 1300 ? 'column-reverse' : 'row',
                     justifyContent: 'space-between',
                     alignItems: 'center'
                 }}>
@@ -266,8 +266,8 @@ const Home = () => {
                         alignItems: 'center', 
                         justifyContent: 'space-between',
 
-                        width: buttonState ? "30%" : "15%",
-                        ml: windowSize.innerWidth < 1236 ? "5%" : "25vh",
+                        width:  "30%",
+                        ml: windowSize.innerWidth < 1300 ? '0vh' : "25vh",
                         mb: '15vh'
                     }}
                     id="left">
@@ -281,17 +281,17 @@ const Home = () => {
                             }}
                         >
                             {showSideAdd ? <AddButton cond={showSideAdd} setFunction={setreadyInput}/> : 
-                            <AccessButton 
-                            cond={buttonState}
-                            runFunction={() => {
-                                fetch(serverUrl + "/database/names")
-                                .then(response => {return response.json()})
-                                .then(response => {
-                                    setactivityNames(response)
-                                    setbuttonState(true)
-                                })
-                            }} 
-                            setFunction={setbuttonState}/>}
+                                <AccessButton 
+                                cond={buttonState}
+                                runFunction={() => {
+                                    fetch(serverUrl + "/database/names")
+                                    .then(response => {return response.json()})
+                                    .then(response => {
+                                        setactivityNames(response)
+                                        setbuttonState(!buttonState)
+                                    })
+                                }} 
+                                setFunction={setbuttonState}/>}
                         </Grid>
                         {   
                             !buttonState ? "" :
@@ -334,14 +334,6 @@ const Home = () => {
                                     />
                         }
                 </Grid>
-                {/* <Grid
-                    Item
-                    sx={{
-                        position: 'absolute',
-                        top: '0%'
-                    }}>
-                        {JSON.stringify(form)}
-                    </Grid> */}
                 <Grid
                     item
                     sx = {{
@@ -350,7 +342,8 @@ const Home = () => {
                         justifyContent: 'center',
                         
                         height: '185px',
-                        mr: windowSize.innerWidth < 1500 < 1100 ? '5vh' : windowSize.innerWidth < 1500 ? '10vh' : '33vh',
+                        mt: windowSize.innerWidth < 1300 ? '8vh' : '0vh',
+                        mr: windowSize.innerWidth < 1300 ? '0vh' : '37vh',
                         mb: '10vh'
                     }}
                     id="right">

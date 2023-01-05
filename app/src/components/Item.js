@@ -1,6 +1,4 @@
 import * as React   from 'react';
-import { Link }     from 'react-router-dom';
-import Textfit      from 'react-textfit'
 import { Grid }     from '@mui/material';
 
 class Item extends React.Component {
@@ -19,16 +17,24 @@ class Item extends React.Component {
                     fontSize: '20px',
 
                     width: '75%',
+
+                    overFlowX: "hidden",
+                    whiteSpace: "nowrap",
+                    textOverflow: "ellipsis",
+                    display: "block",
+                    overflow: "hidden"
                 
                 }}>
-                    <Link 
+                    {this.props.text}
+                    {/* <Link 
                         onClick={
                             () => this.props.runFunction()
                         }
                         style={{
+                            display: "block"
                         }}>
                             <Textfit mode="single">{this.props.text}</Textfit>
-                    </Link>
+                    </Link> */}
             </Grid>
         );
     }

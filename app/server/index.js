@@ -84,7 +84,7 @@ app.post('/database/:reqType', jsonParser, function requestHandler(req, res) {
             delete fileData["names"][req.body["name"]];
             delete fileData[req.body["name"]];
             fileData["size"] -= 1;
-            writeJSON("database/database.json", fileData);
+            // writeJSON("database/database.json", fileData);
           } 
         })
         break;
