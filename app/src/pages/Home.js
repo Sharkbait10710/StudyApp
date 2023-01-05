@@ -17,6 +17,7 @@ import NewActivity              from '../components/NewActivity'
 import Options                  from '../components/Options'
 import Activity                 from '../components/Activity'
 
+import { motion }               from "framer-motion";
 import { randomizenatList }     from '../utils/utility'
 
 import background               from "../imgs/bgImage5.jpg"
@@ -353,7 +354,8 @@ const Home = () => {
                         
                         height: '185px',
                         mt: windowSize.innerWidth < 1300 ? '8vh' : '0vh',
-                        mr: windowSize.innerWidth < 1300 ? '0vh' : '50vh',
+                        mr: windowSize.innerWidth < 1300 ? '0vh' : 
+                            windowSize.innerWidth < 1500 ? '20vh': '50vh',
                         mb: '10vh'
                     }}
                     id="right">
