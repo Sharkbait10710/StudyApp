@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React   from 'react';
 import {
     Grid,
     Radio,
@@ -8,7 +8,7 @@ import {
     OutlinedInput
 } from '@mui/material';
 
-
+import Latex        from "react-latex"
 
 class FormEntry extends React.Component {
     constructor(props)
@@ -16,7 +16,8 @@ class FormEntry extends React.Component {
         super(props);
         this.state = { 
             radio : this.props.type == "MC",
-            checkbox: this.props.latex
+            checkbox: this.props.latex,
+            userInput: ""
         };
     }
     
@@ -207,10 +208,11 @@ class FormEntry extends React.Component {
                             item
                             sx={{
                                 display: "flex",
+                                flexDirection: "column",
                                 alignItems: "center",
                                 justifyContent: 'center',
                                 width: "90%",
-                                height: "60%",
+                                height: "90%",
 
                                 m: "10px"
                             }}>
@@ -229,6 +231,10 @@ class FormEntry extends React.Component {
                                 <OutlinedInput
                                     multiline
                                     rows={3}
+                                    onChange={(event) => {
+                                        this.setState({userInput: event.target.value})
+                                    }}
+
                                     id={"form answer 0 " + this.props.id}
                                     sx={{
                                         fontFamily: "Space Grotesk"
@@ -237,6 +243,18 @@ class FormEntry extends React.Component {
                                         defaultValue: this.props.answer[0]
                                     }}/>
                             </FormControl>
+                            {
+                                this.state.checkbox ? 
+                                <Grid
+                                    item
+                                    sx={{
+                                        mt: "4%",
+                                        width: "100%",
+
+                                        fontFamily: "Space Grotesk"
+                                    }}><Latex>{this.state.userInput}</Latex></Grid>
+                                : ""
+                            }
                         </Grid> : 
                         <Grid
                             item

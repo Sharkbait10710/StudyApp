@@ -9,8 +9,6 @@ import {
 
 import Home from './pages/Home'
 
-// var Latex = require("react-latex");
-
 function App() {
   // =====  Fronend ===== //
   return(

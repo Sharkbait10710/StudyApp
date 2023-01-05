@@ -1,4 +1,4 @@
-import * as React           from 'react';
+import * as React           from 'react'
 import { 
     Grid,
     FormControl,
@@ -6,15 +6,16 @@ import {
     OutlinedInput
 } from '@mui/material';
 
-import fractionUnicode      from 'fraction-unicode'
-import { randomizenatList } from '../utils/utility';
+import Latex                from "react-latex"
+import { randomizenatList } from '../utils/utility'
 
 class Activity extends React.Component {
     constructor(props)
     {
         super(props);
         this.state = { 
-            randomList : randomizenatList(4)
+            randomList : randomizenatList(4),
+            userInput : ""
         };
     }
 
@@ -98,7 +99,7 @@ class Activity extends React.Component {
                                     mt: "8px",
                                     p: "4px"
                                 }}>
-                                {this.props.problem["problem"]["question"]}
+                                <Latex>{this.props.problem["problem"]["question"]}</Latex>
                             </Grid>
                         </Grid>
                         {this.props.problem["problem"]["Latex"] ?
@@ -106,31 +107,43 @@ class Activity extends React.Component {
                                 item
                                 sx={{
                                     display: 'flex',
-                                flexGrow: 1,
+                                    flexDirection: 'column',
+                                    justifyContent: 'center',
+                                    alignItem: 'center',
+                                    flexGrow: 1,
 
-                                fontFamily: 'Space Grotesk',
-                                fontStyle: 'italic',
+                                    fontFamily: 'Space Grotesk',
+                                    fontStyle: 'italic',
 
-                                overflowWrap: 'break-word',
-                                overflow: 'hidden',
+                                    overflowWrap: 'break-word',
+                                    overflow: 'hidden',
 
-                                width: "95%",
+                                    width: "95%",
 
-                                m: "10px",
-                                p: "6px",
+                                    m: "10px",
+                                    p: "6px",
 
-                                border: 3,
-                                borderColor: '#e0dbce',
-                                borderRadius: '15px'
+                                    border: 3,
+                                    borderColor: '#e0dbce',
+                                    borderRadius: '15px'
 
                                 }}>
                                 <Grid
                                     item
                                     sx={{
                                         fontFamily: 'Space Grotesk',
-                                        display: "absolute"
+                                        position: "absolute",
+                                        left: "5%",
+                                        top: "36%"
                                     }}>
                                         Latex
+                                </Grid>
+                                <Grid
+                                    item
+                                    sx={{
+                                        fontStyle: 'normal'
+                                    }}>
+                                <Latex>{this.state["userInput"]}</Latex>
                                 </Grid>
                             </Grid>
                         : ""}
@@ -259,13 +272,20 @@ class Activity extends React.Component {
                                     rows={3}
                                     onChange={(event) => {
                                         this.props.answerHandler(event.target.value)
-                                        console.log(event.target.value)
+                                        this.setState({userInput: event.target.value})
                                     }}
                                     sx={{
                                         fontFamily: "Space Grotesk"
                                     }}/>
                             </FormControl>
                         </Grid>}
+                        {/* DEBUG ONLY
+                            <Grid
+                            item
+                            sx={{
+                                position: 'absolute'
+                            }}
+                            >{"userinput" + this.state["userInput"]}</Grid> */}
                 </Grid>
 
                 <Grid

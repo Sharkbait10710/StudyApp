@@ -19,7 +19,7 @@ import Activity                 from '../components/Activity'
 
 import { randomizenatList }     from '../utils/utility'
 
-import background               from "../imgs/bgImage2.jpg";
+import background               from "../imgs/bgImage5.jpg"
 
 const serverUrl = "http://localhost:3001";
 const delayAmt  = 1;
@@ -329,7 +329,7 @@ const Home = () => {
                                             setactivityData(response["return"]["data"]);
                                             setProblem({
                                                 "randomList": arr,
-                                                "probNum": 0,
+                                                "probNum": arr[0],
                                                 "problem": response["return"]["data"][arr[0]]
                                             });
                                         })
@@ -464,7 +464,6 @@ const Home = () => {
                         }}/>
                 : ""
             }
-
         </Container>
     )
 }

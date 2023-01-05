@@ -21,7 +21,7 @@ class Options extends React.Component {
                     alignItems: 'center',
                     height: "40vh",
                     width: "100vh",
-
+                    
                     overflowY: 'auto',
                     overflowX: 'hidden'
                 }}>
@@ -40,7 +40,7 @@ class Options extends React.Component {
                                     borderColor: "#e0dbce",
                                     borderRadius: "15px",
 
-                                    mb: "5px"
+                                    p: "3px"
                                 }}
                                 key={"Grid " + name}
                                 >

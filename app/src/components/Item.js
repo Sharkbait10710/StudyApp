@@ -27,6 +27,8 @@ class Item extends React.Component {
                         }
                         className="multipleChoice"
                         style={{
+                            fontWeight: '700',
+
                             overFlowX: "hidden",
                             whiteSpace: "nowrap",
                             textOverflow: "ellipsis",
@@ -35,15 +37,6 @@ class Item extends React.Component {
                         }}>
                         {this.props.text}
                     </div>
-                    {/* <Link 
-                        onClick={
-                            () => this.props.runFunction()
-                        }
-                        style={{
-                            display: "block"
-                        }}>
-                            <Textfit mode="single">{this.props.text}</Textfit>
-                    </Link> */}
             </Grid>
         );
     }
