@@ -292,17 +292,31 @@ const Home = () => {
                             }}
                         >
                             {showSideAdd ? <AddButton cond={showSideAdd} setFunction={setreadyInput}/> : 
-                                <AccessButton 
-                                cond={buttonState}
-                                runFunction={() => {
-                                    fetch(serverUrl + "/database/names")
-                                    .then(response => {return response.json()})
-                                    .then(response => {
-                                        setactivityNames(response)
-                                        setbuttonState(!buttonState)
-                                    })
-                                }} 
-                                setFunction={setbuttonState}/>}
+                                <motion.div
+                                    initial={{
+                                        x: '-100vw'
+                                    }}
+                                    animate={{
+                                        x: '0vw'
+                                    }}
+                                    transition={{
+                                        type: "spring",
+                                        stiffness: 25,
+                                        duration: 1
+                                    }}>
+                                    <AccessButton 
+                                    cond={buttonState}
+                                    runFunction={() => {
+                                        fetch(serverUrl + "/database/names")
+                                        .then(response => {return response.json()})
+                                        .then(response => {
+                                            setactivityNames(response)
+                                            setbuttonState(!buttonState)
+                                        })
+                                    }} 
+                                    setFunction={setbuttonState}/>
+                                </motion.div>
+                                }
                         </Grid>
                         {   
                             !buttonState ? "" :
@@ -345,8 +359,20 @@ const Home = () => {
                                     />
                         }
                 </Grid>
-                <Grid
+                <motion.Grid
                     item
+                    initial={{
+                        x: '100vw',
+                        y: '-8vh'
+                    }}
+                    animate={{
+                        x: '-30vw'
+                    }}
+                    transition={{
+                        type: "spring",
+                        stiffness: 25,
+                        duration: 1,
+                    }}
                     sx = {{
                         display: 'flex',
                         alignItems: 'center',
@@ -394,7 +420,7 @@ const Home = () => {
                                         Press something
                                 </Grid>
                         </Grid>
-                </Grid>
+                </motion.Grid>
             </Grid>
 
             {/*Pop Ups*/}

@@ -10,6 +10,8 @@ import {
 
 import Latex        from "react-latex"
 
+import { motion }   from "framer-motion"
+
 class FormEntry extends React.Component {
     constructor(props)
     {

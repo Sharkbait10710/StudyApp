@@ -1,6 +1,6 @@
 import * as React   from 'react';
 import { Grid }     from '@mui/material';
-
+import { motion }   from 'framer-motion'
 class Item extends React.Component {
     render() {
         return (
@@ -21,7 +21,10 @@ class Item extends React.Component {
                     overflow: "hidden"
                 
                 }}>
-                    <div
+                    <motion.div
+                        whileHover={{
+                            scale: 1.1
+                        }}  
                         onClick={
                             () => this.props.runFunction()
                         }
@@ -36,7 +39,7 @@ class Item extends React.Component {
                             overflow: "hidden"
                         }}>
                         {this.props.text}
-                    </div>
+                    </motion.div>
             </Grid>
         );
     }

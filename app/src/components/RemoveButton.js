@@ -2,10 +2,16 @@ import * as React   from 'react';
 import RemoveIcon   from '@mui/icons-material/Remove'
 import {IconButton} from '@mui/material';
 
+import { motion } from 'framer-motion'
+
 class RemoveButton extends React.Component {
     render() {
         return (
-            <IconButton
+            <motion.div
+                whileHover={{
+                    scale: 1.1
+                }}>
+                <IconButton
                 onClick={() => {
                     this.props.runFunction();
                 }} sx={{
@@ -21,6 +27,7 @@ class RemoveButton extends React.Component {
                 }}>
                 <RemoveIcon/>
             </IconButton>
+            </motion.div>
         )
     }
 }
