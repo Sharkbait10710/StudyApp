@@ -270,8 +270,11 @@ class Activity extends React.Component {
                                 <OutlinedInput
                                     multiline
                                     rows={3}
+                                    id={"answerInput"}
                                     onChange={(event) => {
-                                        this.props.answerHandler(event.target.value)
+                                        if (this.props.answerHandler(event.target.value)) {
+                                            document.getElementById("answerInput").value = ""
+                                        }
                                         this.setState({userInput: event.target.value})
                                     }}
                                     sx={{
@@ -279,13 +282,6 @@ class Activity extends React.Component {
                                     }}/>
                             </FormControl>
                         </Grid>}
-                        {/* DEBUG ONLY
-                            <Grid
-                            item
-                            sx={{
-                                position: 'absolute'
-                            }}
-                            >{"userinput" + this.state["userInput"]}</Grid> */}
                 </Grid>
 
                 <Grid

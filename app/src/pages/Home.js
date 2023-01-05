@@ -164,8 +164,6 @@ const Home = () => {
                             try {
                                 let val1 = document.getElementById("form type " + ele).getAttribute("value1")
                                 let val2 = document.getElementById("form type " + ele).getAttribute("value2")
-                                console.log("val1", val1);
-                                console.log("val2", val2);
                                 temp["data"][ele]["type"] = val1==false ? temp["data"][ele]["type"] : val1==1 ? "MC" : "FR";
                                 temp["data"][ele]["Latex"] = val2 == "undefined" ? temp["data"][ele]["Latex"] : val2;
                             } catch (err) {}
@@ -332,7 +330,7 @@ const Home = () => {
                                             setshowForm(true);
                                             setForm(response["return"]);
                                         })
-                                        .catch((err) => console.log(err))
+                                        .catch((err) => {})
                                     }}
                                     itemFunction={(name) => {
                                         fetch(serverUrl + "/database/name/" + name)
@@ -341,6 +339,7 @@ const Home = () => {
                                         })
                                         .then((response) => {
                                             var arr = randomizenatList(Object.keys(response["return"]["data"]).length)
+                                            
                                             setactivityData(response["return"]["data"]);
                                             setProblem({
                                                 "randomList": arr,
@@ -359,68 +358,69 @@ const Home = () => {
                                     />
                         }
                 </Grid>
-                <motion.Grid
-                    item
+                <motion.div
                     initial={{
                         x: '100vw',
-                        y: '-8vh'
                     }}
                     animate={{
-                        x: '-30vw'
+                        x: '0vw'
                     }}
                     transition={{
                         type: "spring",
                         stiffness: 25,
                         duration: 1,
-                    }}
-                    sx = {{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        
-                        height: '185px',
-                        mt: windowSize.innerWidth < 1300 ? '8vh' : '0vh',
-                        mr: windowSize.innerWidth < 1300 ? '0vh' : 
-                            windowSize.innerWidth < 1500 ? '20vh': '50vh',
-                        mb: '10vh'
-                    }}
-                    id="right">
-                        <Grid 
-                            container
-                            sx = {{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                
-                                fontFamily: 'Space Grotesk',
-                                textAlign: 'center',
-                                width: '100%',
-                                height: '100%'
-                            }}>
-                                <Grid
-                                    item
-                                    sx = {{
-                                        fontWeight: 'bold',
-                                        fontSize: '80px',
-                                        
-                                        border: 3,
-                                        borderColor: '#e0dbce',
-                                        borderRadius: '15px',
-                                        mb: '1%',
-                                        p: '10px'
-                                    }}>
-                                    Study App
-                                </Grid>
-                                <Grid
-                                    item
-                                    sx = {{
-                                        fontSize: '20px',
-                                        textTransform: 'uppercase',
-                                        textDecoration: 'underline'
-                                    }}>
-                                        Press something
-                                </Grid>
-                        </Grid>
-                </motion.Grid>
+                    }}>
+                    <Grid
+                        item
+                        sx = {{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            
+                            height: '185px',
+                            mt: windowSize.innerWidth < 1300 ? '8vh' : '0vh',
+                            mr: windowSize.innerWidth < 1300 ? '0vh' : 
+                                windowSize.innerWidth < 1500 ? '20vh': '50vh',
+                            mb: '10vh'
+                        }}
+                        id="right">
+                            <Grid 
+                                container
+                                sx = {{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    
+                                    fontFamily: 'Space Grotesk',
+                                    textAlign: 'center',
+                                    width: '100%',
+                                    height: '100%'
+                                }}>
+                                    <Grid
+                                        item
+                                        sx = {{
+                                            fontWeight: 'bold',
+                                            fontSize: '80px',
+                                            
+                                            border: 3,
+                                            borderColor: '#e0dbce',
+                                            borderRadius: '15px',
+                                            mb: '1%',
+                                            p: '10px'
+                                        }}>
+                                        Study App
+                                    </Grid>
+                                    <Grid
+                                        item
+                                        sx = {{
+                                            fontSize: '20px',
+                                            textTransform: 'uppercase',
+                                            textDecoration: 'underline'
+                                        }}>
+                                            Press something
+                                    </Grid>
+                            </Grid>
+                    </Grid>
+                </motion.div>
             </Grid>
 
             {/*Pop Ups*/}
@@ -439,8 +439,7 @@ const Home = () => {
                     data={form["data"]}
                     addFormEntry={() => {
                         let temp = form;
-                        temp["size"] += 1;
-                        temp["data"][temp["size"] - 1] = {
+                        temp["data"][Object.keys(temp["data"]).length] = {
                                 "question": "",
                                 "answer": [
                                     "",
@@ -450,12 +449,11 @@ const Home = () => {
                                 ],
                                 "type": "FR",
                                 "Latex": false
-                            }
+                        }
                         setForm(temp);
                         setforceRender(!forceRender);
                     }} 
                     commitActivity={() => {
-                        console.log(JSON.stringify(form))
                         makeActivity(form["name"], form["data"]);
                         setTimeout(() => {
                             setshowForm(false);
@@ -488,6 +486,8 @@ const Home = () => {
                                 setStats(temp);
 
                                 setforceRender(!forceRender);
+
+                                return true;
                             }
                         }}/>
                 : ""

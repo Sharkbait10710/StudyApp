@@ -107,10 +107,6 @@ app.post('/database/:reqType', jsonParser, function requestHandler(req, res) {
   } else {
     write();
   }
-  // fs.writeFile("database/database.json", JSON.stringify(JSON.stringify(req.body)), err => {
-  //   if (err) throw err; 
-  //   console.log("Done writing");
-  // });
 });
 
 
