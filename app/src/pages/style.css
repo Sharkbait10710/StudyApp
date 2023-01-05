@@ -23,3 +23,7 @@ a:hover {
     border-radius: 10px;
 }
 
+.multipleChoice:hover {
+    cursor: pointer
+}
+

@@ -129,7 +129,7 @@ class FormEntry extends React.Component {
                                     onChange={(event) => {
                                             this.setState({radio: 0});
                                         }}
-                                    value="0"
+                                    value="FR"
                                     name="radio-buttons"
                                     id={"form FR " + this.props.id}
                                     sx={{
@@ -154,7 +154,7 @@ class FormEntry extends React.Component {
                                     onChange={(event) => {
                                         this.setState({radio: 1});
                                     }}
-                                    value="1"
+                                    value="MC"
                                     name="radio-buttons"
                                     id={"form MC " + this.props.id}
                                     sx={{
@@ -176,7 +176,6 @@ class FormEntry extends React.Component {
                                 <Checkbox
                                     checked={this.state.checkbox==1}
                                     onClick={() => {
-                                        console.log("radio", this.state.checkbox);
                                         this.setState({checkbox: !this.state.checkbox})
                                     }}
                                     value="1"

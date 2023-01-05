@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React           from 'react';
 import { 
     Grid,
     FormControl,
@@ -6,7 +6,18 @@ import {
     OutlinedInput
 } from '@mui/material';
 
+import fractionUnicode      from 'fraction-unicode'
+import { randomizenatList } from '../utils/utility';
+
 class Activity extends React.Component {
+    constructor(props)
+    {
+        super(props);
+        this.state = { 
+            randomList : randomizenatList(4)
+        };
+    }
+
     render() {
         return (
             <Grid
@@ -143,6 +154,8 @@ class Activity extends React.Component {
                                 }}>
                                     <Grid
                                         item
+                                        onClick={() => this.props.answerHandler(this.state.randomList[0])}
+                                        className="multipleChoice"
                                         sx={{
                                             display: 'flex',
                                             fontFamily: 'Space Grotesk',
@@ -156,10 +169,12 @@ class Activity extends React.Component {
 
                                             borderRadius: '15px'
                                         }}>
-                                        {this.props.problem["problem"]["type"] == "MC" ? this.props.problem["problem"]["answer"][0] : ""}
+                                        {this.props.problem["problem"]["answer"][this.state.randomList[0]]}
                                     </Grid>
                                     <Grid
                                         item
+                                        onClick={() => this.props.answerHandler(this.state.randomList[1])}
+                                        className="multipleChoice"
                                         sx={{
                                             display: 'flex',
                                             fontFamily: 'Space Grotesk',
@@ -174,10 +189,12 @@ class Activity extends React.Component {
 
                                             borderRadius: '15px'
                                         }}>
-                                        {this.props.problem["problem"]["type"] == "MC" ? this.props.problem["problem"]["answer"][1] : ""}
+                                        {this.props.problem["problem"]["answer"][this.state.randomList[1]]}
                                     </Grid>
                                     <Grid
                                         item
+                                        onClick={() => this.props.answerHandler(this.state.randomList[2])}
+                                        className="multipleChoice"
                                         sx={{
                                             display: 'flex',
                                             fontFamily: 'Space Grotesk',
@@ -192,10 +209,12 @@ class Activity extends React.Component {
 
                                             borderRadius: '15px'
                                         }}>
-                                        {this.props.problem["problem"]["type"] == "MC" ? this.props.problem["problem"]["answer"][2] : ""}
+                                        {this.props.problem["problem"]["answer"][this.state.randomList[2]]}
                                     </Grid>
                                     <Grid
                                         item
+                                        onClick={() => this.props.answerHandler(this.state.randomList[3])}
+                                        className="multipleChoice"
                                         sx={{
                                             display: 'flex',
                                             fontFamily: 'Space Grotesk',
@@ -207,12 +226,12 @@ class Activity extends React.Component {
                                             bgcolor: '#e827c5',
 
                                             color: 'white',
-                                            borderRadius: '15px'
+                                            borderRadius: '15px',
                                         }}>
-                                        {this.props.problem["problem"]["type"] == "MC" ? this.props.problem["problem"]["answer"][3] : ""}
+                                        {this.props.problem["problem"]["answer"][this.state.randomList[3]]}
                                     </Grid>
                             </Grid>
-                        : ""}
+                        : 
                         <Grid
                             item
                             sx={{
@@ -239,14 +258,54 @@ class Activity extends React.Component {
                                     multiline
                                     rows={3}
                                     onChange={(event) => {
-                                        // this.setState({question: event.target.value});
+                                        this.props.answerHandler(event.target.value)
+                                        console.log(event.target.value)
                                     }}
                                     sx={{
                                         fontFamily: "Space Grotesk"
                                     }}/>
                             </FormControl>
-                        </Grid>
+                        </Grid>}
                 </Grid>
+
+                <Grid
+                    item
+                    sx={{
+                        position: 'absolute',
+                        top: '-5%',
+                        left: '-10%',
+
+                        fontFamily: 'Space Grotesk',
+                        fontSize: '40px',
+                        fontWeight: 'bold',
+                        color: 'green'
+                    }}>
+                        <Grid 
+                            item
+                            sx={{
+                            }}>
+                                {this.props.stats["totalCorrect"]}
+                        </Grid>
+                        <Grid 
+                            item
+                            sx={{
+                                position: 'absolute',
+                                left: '90%',
+                                bottom: '-23%',
+                                transform: 'rotate(30deg)'
+                            }}>
+                                /
+                        </Grid>
+                        <Grid 
+                            item
+                            sx={{
+                                position: 'absolute',
+                                left: '110%',
+                                bottom: '-70%',
+                            }}>
+                                {this.props.stats["totalQuestion"]}
+                        </Grid>
+                    </Grid>
             </Grid>
         )
     }

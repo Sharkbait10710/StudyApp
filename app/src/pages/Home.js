@@ -6,17 +6,18 @@ import WebFont from 'webfontloader'
 
 import {
     Container,
-    Grid,
-    requirePropFactory
+    Grid
 } from '@mui/material';
 
-import AccessButton from '../components/AccessButton'
-import AddButton    from '../components/AddButton'
+import AccessButton             from '../components/AccessButton'
+import AddButton                from '../components/AddButton'
 
-import Form         from '../components/Form'
-import NewActivity  from '../components/NewActivity'
-import Options      from '../components/Options'
-import Activity     from '../components/Activity'
+import Form                     from '../components/Form'
+import NewActivity              from '../components/NewActivity'
+import Options                  from '../components/Options'
+import Activity                 from '../components/Activity'
+
+import { randomizenatList }     from '../utils/utility'
 
 const serverUrl = "http://localhost:3001";
 const delayAmt  = 1;
@@ -117,6 +118,15 @@ const Home = () => {
         }
     )
 
+    const [stats, setStats] = React.useState(
+        () => {
+            return {
+                "totalQuestion": 0,
+                "totalCorrect": 0
+            }
+        }
+    )
+
     React.useEffect(() => {
         WebFont.load({
             google: {
@@ -149,8 +159,12 @@ const Home = () => {
                     Object.keys(form["data"]).map((ele) => {
                         setTimeout(() => {
                             try {
-                                temp["data"][ele]["type"] = document.getElementById("form type " + ele).getAttribute("value1")==0 ? "FR" : "MC";
-                                temp["data"][ele]["Latex"] = document.getElementById("form type " + ele).getAttribute("value2")==0 ? false : true;
+                                let val1 = document.getElementById("form type " + ele).getAttribute("value1")
+                                let val2 = document.getElementById("form type " + ele).getAttribute("value2")
+                                console.log("val1", val1);
+                                console.log("val2", val2);
+                                temp["data"][ele]["type"] = val1==false ? temp["data"][ele]["type"] : val1==1 ? "MC" : "FR";
+                                temp["data"][ele]["Latex"] = val2 == "undefined" ? temp["data"][ele]["Latex"] : val2;
                             } catch (err) {}
                         }, delayAmt);
                     })
@@ -203,13 +217,11 @@ const Home = () => {
                 Object.keys(form["data"]).map((ele) => {
                     setTimeout(() => {
                         temp["data"][ele]["question"] = document.getElementById("form question " + ele).value;
-                        console.log(temp["data"][ele]["answer"].length)
                         for (let i = 0; i < temp["data"][ele]["answer"].length; i++) {
                             try {
                                 temp["data"][ele]["answer"][i] = document.getElementById("form answer " + i + " " + ele).value;
                             } catch (err) {}
                         }
-                        console.log("Done")
                     }, delayAmt);
                 })
             } catch (err) {}
@@ -303,21 +315,12 @@ const Home = () => {
                                             return response.json();
                                         })
                                         .then((response) => {
-                                            console.log(response)
-                                            var arr = [...Array(Object.keys(response["return"]["data"]).length).keys()];
-                                            for (let i = arr.length - 1; i > 0; i--) {
-                                                const j = Math.floor(Math.random() * (i + 1));
-                                                const temp = arr[i];
-                                                arr[i] = arr[j];
-                                                arr[j] = temp;
-                                            }
-                                            console.log(arr);
+                                            var arr = randomizenatList(Object.keys(response["return"]["data"]).length)
                                             setactivityData(response["return"]["data"]);
                                             setProblem({
                                                 "randomList": arr,
                                                 "probNum": 0,
-                                                "problem": response["return"]["data"][arr[0]],
-                                                "yum": null
+                                                "problem": response["return"]["data"][arr[0]]
                                             });
                                         })
                                     }}
@@ -331,8 +334,14 @@ const Home = () => {
                                     />
                         }
                 </Grid>
-
-                {/*Pop Ups*/}
+                {/* <Grid
+                    Item
+                    sx={{
+                        position: 'absolute',
+                        top: '0%'
+                    }}>
+                        {JSON.stringify(form)}
+                    </Grid> */}
                 <Grid
                     item
                     sx = {{
@@ -382,6 +391,15 @@ const Home = () => {
                         </Grid>
                 </Grid>
             </Grid>
+
+            {/*Pop Ups*/}
+            <Grid
+                item
+                sx={{
+                    display: 'absolute',
+                    top: '5%'
+                }}>
+                </Grid>
             {
                 readyInput  ? 
                     <NewActivity id="UserInput" inputRef={userInput}/> :
@@ -406,6 +424,7 @@ const Home = () => {
                         setforceRender(!forceRender);
                     }} 
                     commitActivity={() => {
+                        console.log(JSON.stringify(form))
                         makeActivity(form["name"], form["data"]);
                         setTimeout(() => {
                             setshowForm(false);
@@ -421,7 +440,25 @@ const Home = () => {
                         })
                     }}/> :
                 activityData != null ? 
-                    <Activity problem={problem}/>
+                    <Activity 
+                        problem={problem}
+                        stats={stats}
+                        answerHandler={(input) => {
+                            if ((problem["problem"]["type"] == "MC" && input == 0) 
+                                || (problem["problem"]["type"] == "FR" && input == problem["problem"]["answer"][0])) {
+                                let temp = problem;
+                                temp["probNum"] = (temp["probNum"] + 1) % temp["randomList"].length;
+                                temp["problem"] = activityData[temp["probNum"]];
+                                setProblem(temp);
+
+                                temp = stats;
+                                temp["totalQuestion"] += 1;
+                                temp["totalCorrect"] += 1;
+                                setStats(temp);
+
+                                setforceRender(!forceRender);
+                            }
+                        }}/>
                 : ""
             }
 

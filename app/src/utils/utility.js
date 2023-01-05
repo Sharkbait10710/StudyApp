@@ -1,26 +1,13 @@
-export const readfromStream = (response, retArr = []) => {
-    const reader = response.body.getReader();
-    let _ = new ReadableStream({
-        start(controller) {
-            return pump();
-            function pump() {
-                return reader.read().then(({ done, value }) => {
-                // When no more data needs to be consumed, close the stream
-                if (done) {
-                    controller.close();
-                    return retArr;
-                } else {
-                    let val = String.fromCharCode.apply(null, value);
-                    retArr.push(val);
-                }
-                // Enqueue the next data chunk into our target stream
-                controller.enqueue(value);
-                return pump();
-                });
-            }
-        }
-    })
-};
+export const randomizenatList = (n) => {
+    var arr = [...Array(n).keys()];
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+    return arr;
+}
 
 export const stateinitVal = (val) => {
     return val;
