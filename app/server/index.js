@@ -26,7 +26,9 @@ app.get('/database/:reqType', (req, res) => {
         fs.mkdirSync('./database');
       }
       writeJSON("database/database.json", defaultData);
-      res.end(JSON.stringify(defaultData));
+      res.end(JSON.stringify({
+        "return": {"names" : defaultData["names"]}
+      }));
     } else {
       switch(req.params["reqType"]) {
         case "names": {

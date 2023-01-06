@@ -308,6 +308,7 @@ const Home = () => {
                                             fetch(serverUrl + "/database/names")
                                             .then(response => {return response.json()})
                                             .then(response => {
+                                                console.log(response)
                                                 setactivityNames(response)
                                                 setbuttonState(!buttonState)
                                             })
@@ -463,7 +464,6 @@ const Home = () => {
                                 fetch(serverUrl + "/database/names")
                                 .then(response => {return response.json()})
                                 .then(response => {
-                                    console.log(response)
                                     setactivityNames(response)
                                     setbuttonState(true)
                                     setforceRender(!forceRender)
