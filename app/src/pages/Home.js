@@ -475,7 +475,7 @@ const Home = () => {
                     <Activity 
                         problem={problem}
                         stats={stats}
-                        timeout={3000}
+                        timeout={1000}
                         answerHandler={(input) => {
                             if (problem["problem"]["type"] == "MC" && input == 0) {
                                 return true
@@ -510,7 +510,7 @@ const Home = () => {
                                 setforceRender(!forceRender);
 
                                 return true;
-                            }, 3000)
+                            }, 1000)
                         }}/>
                 : ""
             }

@@ -3,7 +3,8 @@ import {
     Grid,
     FormControl,
     InputLabel,
-    OutlinedInput
+    OutlinedInput,
+    Button
 } from '@mui/material';
 
 import Latex                    from "react-latex"
@@ -11,6 +12,7 @@ import Latex                    from "react-latex"
 import ReactCountdownClock      from "react-countdown-clock"
 import CheckBoxIcon             from '@mui/icons-material/CheckBox'
 import DisabledByDefaultIcon    from '@mui/icons-material/DisabledByDefault'
+import DoubleArrowIcon          from '@mui/icons-material/DoubleArrow';
 
 import { randomizenatList }     from '../utils/utility'
 
@@ -378,13 +380,10 @@ class Activity extends React.Component {
                                 scale: 1.1
                             }}>
                             <Grid
-                                item
-                                sx={{
-                                    color: 'green'
-                                }}>
+                                item>
                                 <ReactCountdownClock 
-                                    seconds={5}
-                                    color="#14abde"
+                                    seconds={30}
+                                    color="#fa5f2f"
                                     alpha={0.9}
                                     size={70}
                                     onComplete={() => {
@@ -420,7 +419,7 @@ class Activity extends React.Component {
                         </motion.div>:
                     ""}
 
-                        {this.state.showCorrect ? 
+                    {this.state.showCorrect ? 
                         <motion.div
                             initial={{
                                 scale: 0.1,
@@ -443,6 +442,29 @@ class Activity extends React.Component {
                             </Grid> 
                         </motion.div>:
                     ""}     
+                    <Button 
+                        onClick={() => {
+                            this.setState({"showIncorrect": true})
+                            this.props.timeoutHandler()
+                            setTimeout(() => this.setState({"showIncorrect": false}), this.props.timeout)
+                        }}
+                        variant="contained" 
+                        endIcon={<DoubleArrowIcon />}
+                        sx={{
+                            position: 'absolute',
+                            bottom: '1.3%',
+                            right: '-9.8%',
+                            backgroundColor: '#fff',
+                            color: '#fa5f2f',
+                            transform: "scale(1.4)",
+                            '&:hover': {
+                                backgroundColor: '#fa5f2f',
+                                color: '#e0dbce',
+                                scale: '1.1'
+                            },
+                        }}>
+                        Skip
+                    </Button>
             </Grid>
         )
     }
