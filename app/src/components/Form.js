@@ -1,5 +1,5 @@
 import * as React           from 'react';
-import FormEntry            from '../components/FormEntry'
+import FormEntry            from './FormEntry'
 import AddCircleIcon        from '@mui/icons-material/AddCircle'
 import LabelImportantIcon   from '@mui/icons-material/LabelImportant'
 import { 

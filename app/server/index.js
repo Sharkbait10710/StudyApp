@@ -11,6 +11,7 @@ app.listen(PORT, () => {
 });
 
 app.use(cors());
+
 // create application/json parser
 var jsonParser = bodyParser.json()
 

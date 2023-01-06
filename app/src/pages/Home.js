@@ -257,171 +257,172 @@ const Home = () => {
                 backgroundImage: `url(${background})`
 
             }}>
-            
-            <Grid 
-                container
-                sx = {{
-                    display: 'flex',
-                    flexDirection: windowSize.innerWidth < 1300 ? 'column-reverse' : 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center'
-                }}>
-
-                <Grid
-                    item
+            {activityData == null ? 
+                <Grid 
+                    container
                     sx = {{
                         display: 'flex',
-                        flexDirection: buttonState ? 'row' : 'row-reverse',
-                        alignItems: 'center', 
+                        flexDirection: windowSize.innerWidth < 1300 ? 'column-reverse' : 'row',
                         justifyContent: 'space-between',
-
-                        width:  "30%",
-                        ml: windowSize.innerWidth < 1300 ? '0vh' : "13vh",
-                        mb: '15vh'
-                    }}
-                    id="left">
-                        <Grid
-                            container 
-                            sx = {{
-                                display: 'flex',
-                                flexDirection: showMidButton || showSideAdd ? 'row' : 'row-reverse',
-                                alignItems: 'center', 
-                                justifyContent: 'space-between'
-                            }}
-                        >
-                            {showSideAdd ? <AddButton cond={showSideAdd} setFunction={setreadyInput}/> : 
-                                <motion.div
-                                    initial={{
-                                        x: '-100vw'
-                                    }}
-                                    animate={{
-                                        x: '0vw'
-                                    }}
-                                    transition={{
-                                        type: "spring",
-                                        stiffness: 25,
-                                        duration: 1
-                                    }}>
-                                    <AccessButton 
-                                    cond={buttonState}
-                                    runFunction={() => {
-                                        fetch(serverUrl + "/database/names")
-                                        .then(response => {return response.json()})
-                                        .then(response => {
-                                            setactivityNames(response)
-                                            setbuttonState(!buttonState)
-                                        })
-                                    }} 
-                                    setFunction={setbuttonState}/>
-                                </motion.div>
-                                }
-                        </Grid>
-                        {   
-                            !buttonState ? "" :
-                            showMidButton ? <AddButton setFunction={setreadyInput}/> :
-                                <Options 
-                                    activityNames={activityNames["return"]["names"]}
-                                    editFunction={(name) => {
-                                        fetch(serverUrl + "/database/name/" + name)
-                                        .then((response) => {
-                                            return response.json();
-                                        })
-                                        .then((response) => {
-                                            setshowForm(true);
-                                            setForm(response["return"]);
-                                        })
-                                        .catch((err) => {})
-                                    }}
-                                    itemFunction={(name) => {
-                                        fetch(serverUrl + "/database/name/" + name)
-                                        .then((response) => {
-                                            return response.json();
-                                        })
-                                        .then((response) => {
-                                            var arr = randomizenatList(Object.keys(response["return"]["data"]).length)
-                                            
-                                            setactivityData(response["return"]["data"]);
-                                            setProblem({
-                                                "randomList": arr,
-                                                "probNum": arr[0],
-                                                "problem": response["return"]["data"][arr[0]]
-                                            });
-                                        })
-                                    }}
-                                    removeFunction={(name) => {
-                                        deleteActivity(name)
-                                        let temp = activityNames
-                                        delete temp["return"]["names"][name]
-                                        setactivityNames(temp)
-                                        setforceRender(!forceRender)
-                                    }}
-                                    />
-                        }
-                </Grid>
-                <motion.div
-                    initial={{
-                        x: '100vw',
-                    }}
-                    animate={{
-                        x: '0vw'
-                    }}
-                    transition={{
-                        type: "spring",
-                        stiffness: 25,
-                        duration: 1,
+                        alignItems: 'center'
                     }}>
+
                     <Grid
                         item
                         sx = {{
                             display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            
-                            height: '185px',
-                            mt: windowSize.innerWidth < 1300 ? '8vh' : '0vh',
-                            mr: windowSize.innerWidth < 1300 ? '0vh' : 
-                                windowSize.innerWidth < 1500 ? '20vh': '50vh',
-                            mb: '10vh'
+                            flexDirection: buttonState ? 'row' : 'row-reverse',
+                            alignItems: 'center', 
+                            justifyContent: 'space-between',
+
+                            width:  "30%",
+                            ml: windowSize.innerWidth < 1300 ? '0vh' : "13vh",
+                            mb: '15vh'
                         }}
-                        id="right">
-                            <Grid 
-                                container
+                        id="left">
+                            <Grid
+                                container 
                                 sx = {{
                                     display: 'flex',
-                                    flexDirection: 'column',
-                                    
-                                    fontFamily: 'Space Grotesk',
-                                    textAlign: 'center',
-                                    width: '100%',
-                                    height: '100%'
-                                }}>
-                                    <Grid
-                                        item
-                                        sx = {{
-                                            fontWeight: 'bold',
-                                            fontSize: '80px',
-                                            
-                                            border: 3,
-                                            borderColor: '#e0dbce',
-                                            borderRadius: '15px',
-                                            mb: '1%',
-                                            p: '10px'
+                                    flexDirection: showMidButton || showSideAdd ? 'row' : 'row-reverse',
+                                    alignItems: 'center', 
+                                    justifyContent: 'space-between'
+                                }}
+                            >
+                                {showSideAdd ? <AddButton cond={showSideAdd} setFunction={setreadyInput}/> : 
+                                    <motion.div
+                                        initial={{
+                                            x: '-100vw'
+                                        }}
+                                        animate={{
+                                            x: '0vw'
+                                        }}
+                                        transition={{
+                                            type: "spring",
+                                            stiffness: 25,
+                                            duration: 1
                                         }}>
-                                        Study App
-                                    </Grid>
-                                    <Grid
-                                        item
-                                        sx = {{
-                                            fontSize: '20px',
-                                            textTransform: 'uppercase',
-                                            textDecoration: 'underline'
-                                        }}>
-                                            Press something
-                                    </Grid>
+                                        <AccessButton 
+                                        cond={buttonState}
+                                        runFunction={() => {
+                                            fetch(serverUrl + "/database/names")
+                                            .then(response => {return response.json()})
+                                            .then(response => {
+                                                setactivityNames(response)
+                                                setbuttonState(!buttonState)
+                                            })
+                                        }} 
+                                        setFunction={setbuttonState}/>
+                                    </motion.div>
+                                    }
                             </Grid>
+                            {   
+                                !buttonState ? "" :
+                                showMidButton ? <AddButton setFunction={setreadyInput}/> :
+                                    <Options 
+                                        activityNames={activityNames["return"]["names"]}
+                                        editFunction={(name) => {
+                                            fetch(serverUrl + "/database/name/" + name)
+                                            .then((response) => {
+                                                return response.json();
+                                            })
+                                            .then((response) => {
+                                                setshowForm(true);
+                                                setForm(response["return"]);
+                                            })
+                                            .catch((err) => {})
+                                        }}
+                                        itemFunction={(name) => {
+                                            fetch(serverUrl + "/database/name/" + name)
+                                            .then((response) => {
+                                                return response.json();
+                                            })
+                                            .then((response) => {
+                                                var arr = randomizenatList(Object.keys(response["return"]["data"]).length)
+                                                
+                                                setactivityData(response["return"]["data"]);
+                                                setProblem({
+                                                    "randomList": arr,
+                                                    "probNum": arr[0],
+                                                    "problem": response["return"]["data"][arr[0]]
+                                                });
+                                            })
+                                        }}
+                                        removeFunction={(name) => {
+                                            deleteActivity(name)
+                                            let temp = activityNames
+                                            delete temp["return"]["names"][name]
+                                            setactivityNames(temp)
+                                            setforceRender(!forceRender)
+                                        }}
+                                        />
+                            }
                     </Grid>
-                </motion.div>
-            </Grid>
+                    <motion.div
+                        initial={{
+                            x: '100vw',
+                        }}
+                        animate={{
+                            x: '0vw'
+                        }}
+                        transition={{
+                            type: "spring",
+                            stiffness: 25,
+                            duration: 1,
+                        }}>
+                        <Grid
+                            item
+                            sx = {{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                
+                                height: '185px',
+                                mt: windowSize.innerWidth < 1300 ? '8vh' : '0vh',
+                                mr: windowSize.innerWidth < 1300 ? '0vh' : 
+                                    windowSize.innerWidth < 1500 ? '20vh': '50vh',
+                                mb: '10vh'
+                            }}
+                            id="right">
+                                <Grid 
+                                    container
+                                    sx = {{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        
+                                        fontFamily: 'Space Grotesk',
+                                        textAlign: 'center',
+                                        width: '100%',
+                                        height: '100%'
+                                    }}>
+                                        <Grid
+                                            item
+                                            sx = {{
+                                                fontWeight: 'bold',
+                                                fontSize: '80px',
+                                                
+                                                border: 3,
+                                                borderColor: '#e0dbce',
+                                                borderRadius: '15px',
+                                                mb: '1%',
+                                                p: '10px'
+                                            }}>
+                                            Study App
+                                        </Grid>
+                                        <Grid
+                                            item
+                                            sx = {{
+                                                fontSize: '20px',
+                                                textTransform: 'uppercase',
+                                                textDecoration: 'underline'
+                                            }}>
+                                                Press something
+                                        </Grid>
+                                </Grid>
+                        </Grid>
+                    </motion.div>
+                </Grid> :
+            ""}
 
             {/*Pop Ups*/}
             <Grid
@@ -462,19 +463,41 @@ const Home = () => {
                                 fetch(serverUrl + "/database/names")
                                 .then(response => {return response.json()})
                                 .then(response => {
+                                    console.log(response)
                                     setactivityNames(response)
                                     setbuttonState(true)
+                                    setforceRender(!forceRender)
                                 })
-                            }, delayAmt*50);
+                            }, delayAmt*500);
                         })
                     }}/> :
                 activityData != null ? 
                     <Activity 
                         problem={problem}
                         stats={stats}
+                        timeout={3000}
                         answerHandler={(input) => {
-                            if ((problem["problem"]["type"] == "MC" && input == 0) 
-                                || (problem["problem"]["type"] == "FR" && input == problem["problem"]["answer"][0])) {
+                            if (problem["problem"]["type"] == "MC" && input == 0) {
+                                return true
+                            } else if (problem["problem"]["type"] == "FR" && input == problem["problem"]["answer"][0]) {
+                                return true
+                            }
+                        }}
+                        setHandler={() => {
+                            let temp = problem;
+                            temp["probNum"] = (temp["probNum"] + 1) % temp["randomList"].length;
+                            temp["problem"] = activityData[temp["probNum"]];
+                            setProblem(temp);
+
+                            temp = stats;
+                            temp["totalQuestion"] += 1;
+                            temp["totalCorrect"] += 1;
+                            setStats(temp);
+
+                            setforceRender(!forceRender);
+                        }}
+                        timeoutHandler={() => {
+                            setTimeout(() => {
                                 let temp = problem;
                                 temp["probNum"] = (temp["probNum"] + 1) % temp["randomList"].length;
                                 temp["problem"] = activityData[temp["probNum"]];
@@ -482,13 +505,12 @@ const Home = () => {
 
                                 temp = stats;
                                 temp["totalQuestion"] += 1;
-                                temp["totalCorrect"] += 1;
                                 setStats(temp);
 
                                 setforceRender(!forceRender);
 
                                 return true;
-                            }
+                            }, 3000)
                         }}/>
                 : ""
             }

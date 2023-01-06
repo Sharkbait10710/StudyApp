@@ -1,4 +1,4 @@
-import * as React           from 'react'
+import * as React               from 'react'
 import { 
     Grid,
     FormControl,
@@ -6,15 +6,23 @@ import {
     OutlinedInput
 } from '@mui/material';
 
-import Latex                from "react-latex"
-import { randomizenatList } from '../utils/utility'
+import Latex                    from "react-latex"
 
+import ReactCountdownClock      from "react-countdown-clock"
+import CheckBoxIcon             from '@mui/icons-material/CheckBox'
+import DisabledByDefaultIcon    from '@mui/icons-material/DisabledByDefault'
+
+import { randomizenatList }     from '../utils/utility'
+
+import { motion }               from "framer-motion"
 class Activity extends React.Component {
     constructor(props)
     {
         super(props);
         this.state = { 
             randomList : randomizenatList(4),
+            showCorrect: false,
+            showIncorrect: false,
             userInput : ""
         };
     }
@@ -167,7 +175,15 @@ class Activity extends React.Component {
                                 }}>
                                     <Grid
                                         item
-                                        onClick={() => this.props.answerHandler(this.state.randomList[0])}
+                                        onClick={() => {
+                                            if (this.props.answerHandler(this.state.randomList[0])) {
+                                                this.setState({"showCorrect": true})
+                                                setTimeout(() => {
+                                                    this.setState({"showCorrect": false})
+                                                    this.props.setHandler()
+                                                }, this.props.timeout)
+                                            }
+                                        }}
                                         className="multipleChoice"
                                         sx={{
                                             display: 'flex',
@@ -186,7 +202,15 @@ class Activity extends React.Component {
                                     </Grid>
                                     <Grid
                                         item
-                                        onClick={() => this.props.answerHandler(this.state.randomList[1])}
+                                        onClick={() => {
+                                            if (this.props.answerHandler(this.state.randomList[1])) {
+                                                this.setState({"showCorrect": true})
+                                                setTimeout(() => {
+                                                    this.setState({"showCorrect": false})
+                                                    this.props.setHandler()
+                                                }, this.props.timeout)
+                                            }
+                                        }}
                                         className="multipleChoice"
                                         sx={{
                                             display: 'flex',
@@ -206,7 +230,15 @@ class Activity extends React.Component {
                                     </Grid>
                                     <Grid
                                         item
-                                        onClick={() => this.props.answerHandler(this.state.randomList[2])}
+                                        onClick={() => {
+                                            if (this.props.answerHandler(this.state.randomList[2])) {
+                                                this.setState({"showCorrect": true})
+                                                setTimeout(() => {
+                                                    this.setState({"showCorrect": false})
+                                                    this.props.setHandler()
+                                                }, this.props.timeout)
+                                            }
+                                        }}
                                         className="multipleChoice"
                                         sx={{
                                             display: 'flex',
@@ -226,7 +258,15 @@ class Activity extends React.Component {
                                     </Grid>
                                     <Grid
                                         item
-                                        onClick={() => this.props.answerHandler(this.state.randomList[3])}
+                                        onClick={() => {
+                                            if (this.props.answerHandler(this.state.randomList[3])) {
+                                                this.setState({"showCorrect": true})
+                                                setTimeout(() => {
+                                                    this.setState({"showCorrect": false})
+                                                    this.props.setHandler()
+                                                }, this.props.timeout)
+                                            }
+                                        }}
                                         className="multipleChoice"
                                         sx={{
                                             display: 'flex',
@@ -273,7 +313,12 @@ class Activity extends React.Component {
                                     id={"answerInput"}
                                     onChange={(event) => {
                                         if (this.props.answerHandler(event.target.value)) {
+                                            this.setState({"showCorrect": true})
                                             document.getElementById("answerInput").value = ""
+                                            setTimeout(() => {
+                                                this.setState({"showCorrect": false})
+                                                this.props.setHandler()
+                                            }, this.props.timeout)
                                         }
                                         this.setState({userInput: event.target.value})
                                     }}
@@ -289,7 +334,7 @@ class Activity extends React.Component {
                     sx={{
                         position: 'absolute',
                         top: '-5%',
-                        left: '-10%',
+                        left: '-9%',
 
                         fontFamily: 'Space Grotesk',
                         fontSize: '40px',
@@ -322,6 +367,82 @@ class Activity extends React.Component {
                                 {this.props.stats["totalQuestion"]}
                         </Grid>
                     </Grid>
+                    {!(this.state.showIncorrect || this.state.showCorrect) ?
+                        <motion.div
+                            initial={{
+                                scale: 0.1,
+                                x: "-10vw",
+                                y: "-80.5vh"
+                            }}
+                            animate={{
+                                scale: 1.1
+                            }}>
+                            <Grid
+                                item
+                                sx={{
+                                    color: 'green'
+                                }}>
+                                <ReactCountdownClock 
+                                    seconds={5}
+                                    color="#14abde"
+                                    alpha={0.9}
+                                    size={70}
+                                    onComplete={() => {
+                                        this.setState({"showIncorrect": true})
+                                        this.props.timeoutHandler()
+                                        setTimeout(() => this.setState({"showIncorrect": false}), this.props.timeout)
+                                    }} />
+                            </Grid>
+                        </motion.div> :
+                    ""}
+
+                    {this.state.showIncorrect ? 
+                        <motion.div
+                            initial={{
+                                scale: 0.1,
+                                x: "-100vw",
+                                y: "-76vh"
+                            }}
+                            animate={{
+                                scale: 1.1,
+                                x: "-6.5vw"
+                            }}
+                            transition={{ type: "spring", duration: 0.4 }}>
+                            <Grid
+                            item
+                            sx={{
+                                fontWeight: 'bold',
+                                transform: "scale(3)",
+                                color: 'red'
+                            }}>
+                                <DisabledByDefaultIcon/>
+                            </Grid> 
+                        </motion.div>:
+                    ""}
+
+                        {this.state.showCorrect ? 
+                        <motion.div
+                            initial={{
+                                scale: 0.1,
+                                x: "-100vw",
+                                y: "-76vh"
+                            }}
+                            animate={{
+                                scale: 1.1,
+                                x: "-6.5vw"
+                            }}
+                            transition={{ type: "spring", duration: 0.4 }}>
+                            <Grid
+                            item
+                            sx={{
+                                fontWeight: 'bold',
+                                transform: "scale(3)",
+                                color: '#28db09'
+                            }}>
+                                <CheckBoxIcon/>
+                            </Grid> 
+                        </motion.div>:
+                    ""}     
             </Grid>
         )
     }
