@@ -179,12 +179,14 @@ class Activity extends React.Component {
                                     <Grid
                                         item
                                         onClick={() => {
-                                            if (!this.state.showIncorrect && this.props.answerHandler(this.state.randomList[0])) {
-                                                this.setState({"showCorrect": true})
-                                                setTimeout(() => {
-                                                    this.setState({"showCorrect": false})
-                                                    this.props.setHandler()
-                                                }, 1000)
+                                            if (!this.state.showIncorrect) {
+                                                if (this.props.answerHandler(this.state.randomList[0])) {
+                                                    this.setState({"showCorrect": true})
+                                                    setTimeout(() => {
+                                                        this.setState({"showCorrect": false})
+                                                        this.props.setHandler()
+                                                    }, 1000)
+                                                }
                                             }
                                         }}
                                         className="multipleChoice"
