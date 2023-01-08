@@ -179,12 +179,12 @@ class Activity extends React.Component {
                                     <Grid
                                         item
                                         onClick={() => {
-                                            if (this.props.answerHandler(this.state.randomList[0])) {
+                                            if (!this.state.showIncorrect && this.props.answerHandler(this.state.randomList[0])) {
                                                 this.setState({"showCorrect": true})
                                                 setTimeout(() => {
                                                     this.setState({"showCorrect": false})
                                                     this.props.setHandler()
-                                                }, this.props.timeout)
+                                                }, 1000)
                                             }
                                         }}
                                         className="multipleChoice"
@@ -211,7 +211,7 @@ class Activity extends React.Component {
                                                 setTimeout(() => {
                                                     this.setState({"showCorrect": false})
                                                     this.props.setHandler()
-                                                }, this.props.timeout)
+                                                }, 1000)
                                             }
                                         }}
                                         className="multipleChoice"
@@ -239,7 +239,7 @@ class Activity extends React.Component {
                                                 setTimeout(() => {
                                                     this.setState({"showCorrect": false})
                                                     this.props.setHandler()
-                                                }, this.props.timeout)
+                                                }, 1000)
                                             }
                                         }}
                                         className="multipleChoice"
@@ -267,7 +267,7 @@ class Activity extends React.Component {
                                                 setTimeout(() => {
                                                     this.setState({"showCorrect": false})
                                                     this.props.setHandler()
-                                                }, this.props.timeout)
+                                                }, 1000)
                                             }
                                         }}
                                         className="multipleChoice"
@@ -321,7 +321,7 @@ class Activity extends React.Component {
                                             setTimeout(() => {
                                                 this.setState({"showCorrect": false})
                                                 this.props.setHandler()
-                                            }, this.props.timeout)
+                                            }, 1000)
                                         }
                                         this.setState({userInput: event.target.value})
                                     }}
@@ -389,7 +389,7 @@ class Activity extends React.Component {
                                     size={70}
                                     onComplete={() => {
                                         this.setState({"showIncorrect": true})
-                                        this.props.timeoutHandler()
+                                        this.props.correctHandler()
                                         setTimeout(() => this.setState({"showIncorrect": false}), this.props.timeout)
                                     }} />
                             </Grid>
