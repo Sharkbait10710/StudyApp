@@ -129,7 +129,7 @@ const Home = () => {
             }
         }
     )
-
+        
     React.useEffect(() => {
         WebFont.load({
             google: {
@@ -475,7 +475,7 @@ const Home = () => {
                     <Activity 
                         problem={problem}
                         stats={stats}
-                        timeout={1000}
+                        timeout={3000}
                         answerHandler={(input) => {
                             if (problem["problem"]["type"] == "MC" && input == 0) {
                                 return true
@@ -510,7 +510,7 @@ const Home = () => {
                                 setforceRender(!forceRender);
 
                                 return true;
-                            }, 1000)
+                            }, 3000)
                         }}/>
                 : ""
             }

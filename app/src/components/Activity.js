@@ -112,7 +112,7 @@ class Activity extends React.Component {
                                 <Latex>{this.props.problem["problem"]["question"]}</Latex>
                             </Grid>
                         </Grid>
-                        {this.props.problem["problem"]["Latex"] ?
+                        {this.props.problem["problem"]["Latex"] || this.state.showIncorrect ?
                             <Grid 
                                 item
                                 sx={{
@@ -144,16 +144,16 @@ class Activity extends React.Component {
                                         fontFamily: 'Space Grotesk',
                                         position: "absolute",
                                         left: "5%",
-                                        top: "36%"
+                                        top: "40%"
                                     }}>
-                                        Latex
+                                        {!this.state.showIncorrect ? "Latex" : "Answer"}
                                 </Grid>
                                 <Grid
                                     item
                                     sx={{
                                         fontStyle: 'normal'
                                     }}>
-                                <Latex>{this.state["userInput"]}</Latex>
+                                {this.state.showIncorrect ? this.props.problem["problem"]["answer"][0] : <Latex>{this.state["userInput"]}</Latex>}
                                 </Grid>
                             </Grid>
                         : ""}
@@ -463,7 +463,7 @@ class Activity extends React.Component {
                                 scale: '1.1'
                             },
                         }}>
-                        Skip
+                        {this.state.showIncorrect ? "Next" : "Skip"}
                     </Button>
             </Grid>
         )
