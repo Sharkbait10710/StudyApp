@@ -228,6 +228,7 @@ const Home = () => {
                         }
                     }, delayAmt);
                 })
+                console.log(JSON.stringify(temp))
                 setForm(temp);
             } catch (err) {}
             }
@@ -429,7 +430,6 @@ const Home = () => {
                 </Grid> :
             ""}
 
-            {/*Pop Ups*/}
             <Grid
                 item
                 sx={{

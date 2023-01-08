@@ -42,7 +42,6 @@ class FormEntry extends React.Component {
 
                     m: "10px"
                 }}>
-                    checkbox {this.state.checkbox}
                 <Grid
                     item
                     sx={{
@@ -247,7 +246,7 @@ class FormEntry extends React.Component {
                                     }}/>
                             </FormControl>
                             {
-                                this.state.checkbox ? 
+                                this.state.checkbox=="true" ? 
                                 <Grid
                                     item
                                     sx={{
