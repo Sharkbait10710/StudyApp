@@ -25,7 +25,8 @@ class Activity extends React.Component {
             randomList : randomizenatList(4),
             showCorrect: false,
             showIncorrect: false,
-            userInput : ""
+            userInput : "",
+            next: false
         };
     }
 
@@ -444,9 +445,15 @@ class Activity extends React.Component {
                     ""}     
                     <Button 
                         onClick={() => {
-                            this.setState({"showIncorrect": true})
-                            this.props.timeoutHandler()
-                            setTimeout(() => this.setState({"showIncorrect": false}), this.props.timeout)
+                            if (!this.state.showIncorrect) {
+                                this.setState({"showIncorrect": true})
+                                this.props.timeoutHandler()
+                                this.setState({next: setTimeout(() => this.setState({"showIncorrect": false}), this.props.timeout)})
+                            } else {
+                                this.props.nextHandler()
+                                clearTimeout(this.state.next)
+                                this.setState({"showIncorrect": false})
+                            }
                         }}
                         variant="contained" 
                         endIcon={<DoubleArrowIcon />}

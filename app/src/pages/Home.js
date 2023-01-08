@@ -129,7 +129,9 @@ const Home = () => {
             }
         }
     )
-        
+    
+    let next = null;
+
     React.useEffect(() => {
         WebFont.load({
             google: {
@@ -497,7 +499,7 @@ const Home = () => {
                             setforceRender(!forceRender);
                         }}
                         timeoutHandler={() => {
-                            setTimeout(() => {
+                            next = setTimeout(() => {
                                 let temp = problem;
                                 temp["probNum"] = (temp["probNum"] + 1) % temp["randomList"].length;
                                 temp["problem"] = activityData[temp["probNum"]];
@@ -511,6 +513,19 @@ const Home = () => {
 
                                 return true;
                             }, 3000)
+                        }}
+                        nextHandler={() => {
+                            clearTimeout(next);
+                            let temp = problem;
+                            temp["probNum"] = (temp["probNum"] + 1) % temp["randomList"].length;
+                            temp["problem"] = activityData[temp["probNum"]];
+                            setProblem(temp);
+
+                            temp = stats;
+                            temp["totalQuestion"] += 1;
+                            setStats(temp);
+
+                            setforceRender(!forceRender);
                         }}/>
                 : ""
             }
