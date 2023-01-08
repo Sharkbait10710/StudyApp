@@ -18,6 +18,31 @@ import { randomizenatList }     from '../utils/utility'
 
 import { motion }               from "framer-motion"
 class Activity extends React.Component {
+    componentDidMount() {
+        // When the component is mounted, add your DOM listener to the "nv" elem.
+        // (The "nv" elem is assigned in the render function.)
+        document.addEventListener("keypress", this.handleEnter);
+      }
+    
+    componentWillUnmount() {
+        // Make sure to remove the DOM listener when the component is unmounted.
+        document.removeEventListener("keypress", this.handleEnter);
+    }
+
+    handleEnter = (event) => {
+        if (event["key"]=="Enter") {
+            if (this.state.showIncorrect) {
+                this.props.nextHandler()
+                clearTimeout(this.state.next)
+                this.setState({"showIncorrect": false})
+            } else {
+                this.setState({"showIncorrect": true})
+                this.props.timeoutHandler()
+                this.setState({next: setTimeout(() => this.setState({"showIncorrect": false}), this.props.timeout)})
+            }
+        } 
+    }
+
     constructor(props)
     {
         super(props);
