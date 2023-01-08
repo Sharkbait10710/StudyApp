@@ -171,6 +171,7 @@ const Home = () => {
                             } catch (err) {}
                         }, delayAmt);
                     })
+                    setForm(temp);
                 } catch (err) {}
             }
         }
@@ -227,6 +228,7 @@ const Home = () => {
                         }
                     }, delayAmt);
                 })
+                setForm(temp);
             } catch (err) {}
             }
         }

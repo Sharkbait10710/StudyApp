@@ -113,7 +113,7 @@ class Activity extends React.Component {
                                 <Latex>{this.props.problem["problem"]["question"]}</Latex>
                             </Grid>
                         </Grid>
-                        {this.props.problem["problem"]["Latex"] || this.state.showIncorrect ?
+                        {this.props.problem["problem"]["Latex"]=="true" || this.state.showIncorrect ?
                             <Grid 
                                 item
                                 sx={{

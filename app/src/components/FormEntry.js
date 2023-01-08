@@ -18,13 +18,14 @@ class FormEntry extends React.Component {
         super(props);
         this.state = { 
             radio : this.props.type == "MC",
-            checkbox: this.props.latex,
+            checkbox: this.props.Latex,
             userInput: ""
         };
     }
     
     render() {
         return (
+            
             <Grid
                 item
                 sx={{
@@ -41,6 +42,7 @@ class FormEntry extends React.Component {
 
                     m: "10px"
                 }}>
+                    checkbox {this.state.checkbox}
                 <Grid
                     item
                     sx={{
@@ -177,7 +179,6 @@ class FormEntry extends React.Component {
                                     fontFamily: "Space Grotesk"
                                 }}>
                                 <Checkbox
-                                    checked={this.state.checkbox==1}
                                     onClick={() => {
                                         this.setState({checkbox: !this.state.checkbox})
                                     }}
