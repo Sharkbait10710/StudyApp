@@ -42,6 +42,7 @@ class FormEntry extends React.Component {
 
                     m: "10px"
                 }}>
+                    latex {this.state.checkbox}
                 <Grid
                     item
                     sx={{
@@ -179,7 +180,8 @@ class FormEntry extends React.Component {
                                 }}>
                                 <Checkbox
                                     onClick={() => {
-                                        this.setState({checkbox: !this.state.checkbox})
+                                        console.log("DEBUG")
+                                        this.setState({checkbox: this.state.checkbox == "false" ? "true" : "false"})
                                     }}
                                     value="1"
                                     id={"form Latex " + this.props.id}
