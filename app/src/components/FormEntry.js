@@ -9,8 +9,7 @@ import {
 } from '@mui/material';
 
 import Latex        from "react-latex"
-
-import { motion }   from "framer-motion"
+import RemoveButton from '../components/RemoveButton'
 
 class FormEntry extends React.Component {
     constructor(props)
@@ -19,7 +18,7 @@ class FormEntry extends React.Component {
         this.state = { 
             radio : this.props.type == "MC",
             checkbox: this.props.Latex,
-            userInput: ""
+            userInput: this.props.answer[0]
         };
     }
     
@@ -42,7 +41,7 @@ class FormEntry extends React.Component {
 
                     m: "10px"
                 }}>
-                    latex {this.state.checkbox}
+                    Latex {this.state.checkbox} {typeof this.state.checkbox}
                 <Grid
                     item
                     sx={{
@@ -179,6 +178,7 @@ class FormEntry extends React.Component {
                                     fontFamily: "Space Grotesk"
                                 }}>
                                 <Checkbox
+                                    checked={this.state.checkbox=="true"}
                                     onClick={() => {
                                         console.log("DEBUG")
                                         this.setState({checkbox: this.state.checkbox == "false" ? "true" : "false"})
@@ -304,6 +304,14 @@ class FormEntry extends React.Component {
                         </Grid>
                     }
                 </Grid>
+                <div
+                    style={{
+                        position: 'relative',
+                        right: '1%',
+                        top: '10%'
+                    }}>
+                    <RemoveButton  runFunction={() => this.props.removeFunction()}/>
+                </div>
             </Grid>
         )
     }
