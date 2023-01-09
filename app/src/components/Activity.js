@@ -179,7 +179,7 @@ class Activity extends React.Component {
                                     sx={{
                                         fontStyle: 'normal'
                                     }}>
-                                {this.state.showIncorrect ? this.props.problem["problem"]["answer"][0] : <Latex>{this.state["userInput"]}</Latex>}
+                                {this.state.showIncorrect ? <Latex>{this.props.problem["problem"]["answer"][0]}</Latex> : <Latex>{this.state["userInput"]}</Latex>}
                                 </Grid>
                             </Grid>
                         : ""}
