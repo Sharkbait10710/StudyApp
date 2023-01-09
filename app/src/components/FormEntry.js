@@ -41,7 +41,6 @@ class FormEntry extends React.Component {
 
                     m: "10px"
                 }}>
-                    num {this.props.id} {typeof this.props.id}
                 <Grid
                     item
                     sx={{

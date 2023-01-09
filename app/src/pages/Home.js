@@ -228,7 +228,6 @@ const Home = () => {
                         }
                     }, delayAmt);
                 })
-                console.log(JSON.stringify(temp))
                 setForm(temp);
             } catch (err) {}
             }
@@ -313,7 +312,6 @@ const Home = () => {
                                             fetch(serverUrl + "/database/names")
                                             .then(response => {return response.json()})
                                             .then(response => {
-                                                console.log(response)
                                                 setactivityNames(response)
                                                 setbuttonState(!buttonState)
                                             })
@@ -344,8 +342,9 @@ const Home = () => {
                                                 return response.json();
                                             })
                                             .then((response) => {
-                                                var arr = randomizenatList(Object.keys(response["return"]["data"]).length)
-                                                
+                                                var arr = Object.keys(response["return"]["data"])
+                                                arr.splice(arr.indexOf("empty"), 1)
+                                                arr = randomizenatList(arr)
                                                 setactivityData(response["return"]["data"]);
                                                 setProblem({
                                                     "randomList": arr,
@@ -445,8 +444,8 @@ const Home = () => {
                     data={form["data"]}
                     addFormEntry={() => {
                         let temp = form;
-                        let keyName = temp["data"]["empty"] == undefined || temp["data"]["empty"][0] == undefined ? Object.keys(temp["data"]).length-1 : temp["data"]["empty"].pop()
-                        console.log(Object.keys(temp["data"]).length-1)
+                        let keyName = temp["data"]["empty"] == undefined ? Object.keys(temp["data"]).length :
+                            temp["data"]["empty"][0] == undefined ? Object.keys(temp["data"]).length-1 : temp["data"]["empty"].pop()
                         temp["data"][keyName] = {
                                 "question": "",
                                 "answer": [
