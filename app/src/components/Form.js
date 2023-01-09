@@ -68,13 +68,14 @@ class Form extends React.Component {
                         {
                         Object.keys(this.props.data).map((ele) => {
                             return (
-                                <FormEntry 
+                                ele != "empty" && <FormEntry 
                                     key={"form " + String(ele)} 
-                                    id={String(ele)} 
+                                    id={ele} 
                                     question={this.props.data[ele]["question"]} 
                                     answer={this.props.data[ele]["answer"]}
                                     type={this.props.data[ele]["type"]}
-                                    Latex={this.props.data[ele]["Latex"]}/>
+                                    Latex={this.props.data[ele]["Latex"]}
+                                    deleteEntry={this.props.deleteFormEntry}/>
                             )
                         })}
                         <Grid

@@ -445,7 +445,9 @@ const Home = () => {
                     data={form["data"]}
                     addFormEntry={() => {
                         let temp = form;
-                        temp["data"][Object.keys(temp["data"]).length] = {
+                        let keyName = temp["data"]["empty"] == undefined || temp["data"]["empty"][0] == undefined ? Object.keys(temp["data"]).length-1 : temp["data"]["empty"].pop()
+                        console.log(Object.keys(temp["data"]).length-1)
+                        temp["data"][keyName] = {
                                 "question": "",
                                 "answer": [
                                     "",
@@ -458,7 +460,15 @@ const Home = () => {
                         }
                         setForm(temp);
                         setforceRender(!forceRender);
-                    }} 
+                    }}
+                    deleteFormEntry={(num) => {
+                        let temp = form;
+                        if (temp["data"]["empty"] == undefined) temp["data"]["empty"] = [];
+                        temp["data"]["empty"].push(num);
+                        delete temp["data"][num]
+                        setForm(temp);
+                        setforceRender(!forceRender);
+                    }}
                     commitActivity={() => {
                         makeActivity(form["name"], form["data"]);
                         setTimeout(() => {

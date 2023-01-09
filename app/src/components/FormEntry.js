@@ -41,7 +41,7 @@ class FormEntry extends React.Component {
 
                     m: "10px"
                 }}>
-                    Latex {this.state.checkbox} {typeof this.state.checkbox}
+                    num {this.props.id} {typeof this.props.id}
                 <Grid
                     item
                     sx={{
@@ -73,7 +73,7 @@ class FormEntry extends React.Component {
                                 variant="outlined">
                                 <InputLabel 
                                     sx={{
-                                        mt: "-10px",
+                                        mt: "-15px",
                                         fontFamily: "Space Grotesk",
                                         fontSize: '20px'
                                     }}>
@@ -180,7 +180,6 @@ class FormEntry extends React.Component {
                                 <Checkbox
                                     checked={this.state.checkbox=="true"}
                                     onClick={() => {
-                                        console.log("DEBUG")
                                         this.setState({checkbox: this.state.checkbox == "false" ? "true" : "false"})
                                     }}
                                     value="1"
@@ -310,7 +309,10 @@ class FormEntry extends React.Component {
                         right: '1%',
                         top: '10%'
                     }}>
-                    <RemoveButton  runFunction={() => this.props.removeFunction()}/>
+                    <RemoveButton runFunction={() => {
+                        console.log("id " + this.props.id)
+                        this.props.deleteEntry(this.props.id)
+                    }}/>
                 </div>
             </Grid>
         )
