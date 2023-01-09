@@ -488,7 +488,7 @@ const Home = () => {
                     <Activity 
                         problem={problem}
                         stats={stats}
-                        timeout={15000}
+                        timeout={60000}
                         answerHandler={(input) => {
                             if (problem["problem"]["type"] == "MC" && input == 0) {
                                 return true
@@ -523,7 +523,7 @@ const Home = () => {
                                 setforceRender(!forceRender);
 
                                 return true;
-                            }, 15000)
+                            }, 60000)
                         }}
                         nextHandler={() => {
                             clearTimeout(next);
