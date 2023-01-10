@@ -410,7 +410,7 @@ class Activity extends React.Component {
                             <Grid
                                 item>
                                 <ReactCountdownClock 
-                                    seconds={45}
+                                    seconds={60}
                                     color="#fa5f2f"
                                     alpha={0.9}
                                     size={70}

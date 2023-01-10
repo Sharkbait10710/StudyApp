@@ -343,8 +343,11 @@ const Home = () => {
                                             })
                                             .then((response) => {
                                                 var arr = Object.keys(response["return"]["data"])
-                                                arr.splice(arr.indexOf("empty"), 1)
+                                                console.log(arr)
+                                                if (arr.indexOf("empty") != -1) arr.splice(arr.indexOf("empty"), 1)
+                                                console.log(arr)
                                                 arr = randomizenatList(arr)
+                                                console.log(arr)
                                                 setactivityData(response["return"]["data"]);
                                                 setProblem({
                                                     "randomList": arr,
